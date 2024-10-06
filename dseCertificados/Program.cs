@@ -164,9 +164,9 @@ namespace dseCertificados
             mensaje.AppendLine("\nParametros:");
             mensaje.AppendLine(@"  clave            Clave de ejecucion del programa");
             mensaje.AppendLine(@"  tipo             Tipo de proceso a ejecutar segun la siguiente lista:");
-            mensaje.AppendLine(@"                       1 = Obtener datos de certificados instalados en el equipo (salida en .json)");
-            mensaje.AppendLine(@"                       2 = Grabar datos certificado desde fichero (salida en .json)");
-            mensaje.AppendLine(@"                       3 = Exportar certificado digital a base64");
+            mensaje.AppendLine(@"                       1 = Obtener las propiedades de los certificados instalados en el equipo (salida en .json)");
+            mensaje.AppendLine(@"                       2 = Obtener propiedades de un certificado en fichero seleccionado por pantalla)");
+            mensaje.AppendLine(@"                       3 = Exportar certificado digital en fichero a base64 ");
             mensaje.AppendLine(@"  salida.json      Nombre del fichero donde se grabara la salida");
             mensaje.AppendLine(@"  certificado.pfx: Nombre del fichero con el certificado a exportar (solo para el tipo 3)");
             mensaje.AppendLine(@"  password:        contraseña del certificado digital a exportar (solo para el tipo 3)");
