@@ -9,6 +9,7 @@ namespace dseCertificados
     {
         public string ajusteSalida(string json)
         {
+            //Ajusta el json recibido a la salida que esperamos con letras en vez de nombres de propiedades
             // Deserializar el JSON en la clase original
             var certificadosEntrada = JsonConvert.DeserializeObject<Certificados>(json);
 
@@ -131,7 +132,7 @@ namespace dseCertificados
         }
         public class PropiedadesCertificados
         {
-            //Clase que representa las propiedades de los certificados que necesitamos
+            //Clase que representa las propiedades de los certificados que se reciben de la libreria dse_utilescert
 
             public string nifCertificado { get; set; }
 
@@ -184,7 +185,7 @@ namespace dseCertificados
 
         public class CustomDateTimeConverter : JsonConverter
         {
-            // Define que este convertidor se aplicará a propiedades de tipo DateTime
+            // Define que este convertidor se aplicará a propiedades de tipo DateTime (necesario para tratar bien las fechas del json que se recibe)
             public override bool CanConvert(Type objectType)
             {
                 return objectType == typeof(DateTime);
@@ -192,6 +193,7 @@ namespace dseCertificados
 
             public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer)
             {
+                //Modifica la escritura del Json para formatear las fechas como 'dd/mm/yyyy'
                 if (value is DateTime dateTime)
                 {
                     writer.WriteValue(dateTime.ToString("dd/MM/yyyy", CultureInfo.InvariantCulture));
@@ -200,11 +202,12 @@ namespace dseCertificados
 
             public override object ReadJson(JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)
             {
+                //Modifica la lectura del Json para formatear las fechas como 'dd/mm/yyyy'
                 string dateString = (string)reader.Value;
 
                 // Verificamos si el valor es nulo o vacío
                 if (string.IsNullOrWhiteSpace(dateString))
-                    return DateTime.MinValue; // o manejarlo de otra manera según tu lógica
+                    return DateTime.MinValue; 
 
                 // Convertir la cadena de fecha a DateTime
                 return DateTime.ParseExact(dateString, "dd/MM/yyyy", CultureInfo.InvariantCulture);

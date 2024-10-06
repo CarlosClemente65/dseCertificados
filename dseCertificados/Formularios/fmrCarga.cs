@@ -63,18 +63,21 @@ namespace dseCertificados
             else
             {
                 password = txtPassword1.Text;
-                (string mensaje1, string serieCertificado, bool resultado1) = gestion.leerCertificado(certificadoPath, password);
-                string serie = gestion.consultaPropiedades(serieCertificado);
+                (string mensaje1, bool resultado1) = gestion.leerCertificado(certificadoPath, password);
                 if (resultado1)
                 {
+                    //Si la lectura del certificado es correcta, se leen las propiedades
                     (string propiedadesCertificados, bool resultado2) = gestion.exportarPropiedadesCertificados();
-
+                    
                     if (resultado2)
                     {
+                    //Si se han podido leer las propiedades, se ajusta el Json recibido a la salida que se espera con letras en vez de nombres de propiedades
                         gestionCertificados gestionCertificados = new gestionCertificados();
                         propiedadesCertificados = gestionCertificados.ajusteSalida(propiedadesCertificados);
                         Program.GrabarSalida(propiedadesCertificados, Program.ficheroSalida);
 
+                        //Se obtiene el nº de serie y se exporta una copia del certificado con extension .da1
+                        string serieCertificado = gestion.consultaPropiedades(GestionarCertificados.nombresPropiedades.serieCertificado);
                         (X509Certificate2 certificado, bool resultado3) = gestion.exportaCertificadoDigital(serieCertificado);
                         if (resultado3)
                         {

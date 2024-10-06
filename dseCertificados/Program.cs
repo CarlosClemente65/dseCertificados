@@ -160,16 +160,16 @@ namespace dseCertificados
         {
             StringBuilder mensaje = new StringBuilder();
             mensaje.AppendLine("");
-            mensaje.AppendLine(@"Uso de la aplicacion: dse_certificados.exe clave tipo salida.json");
+            mensaje.AppendLine(@"Uso de la aplicacion: dse_certificados.exe clave tipo [salida.json | certificado.pfx password]");
             mensaje.AppendLine("\nParametros:");
             mensaje.AppendLine(@"  clave            Clave de ejecucion del programa");
             mensaje.AppendLine(@"  tipo             Tipo de proceso a ejecutar segun la siguiente lista:");
             mensaje.AppendLine(@"                       1 = Obtener las propiedades de los certificados instalados en el equipo (salida en .json)");
-            mensaje.AppendLine(@"                       2 = Obtener propiedades de un certificado en fichero seleccionado por pantalla)");
-            mensaje.AppendLine(@"                       3 = Exportar certificado digital en fichero a base64 ");
+            mensaje.AppendLine(@"                       2 = Exporta certificado seleccionado por pantalla y sus propiedades)");
+            mensaje.AppendLine(@"                       3 = Exporta certificado pasado por fichero a base64");
             mensaje.AppendLine(@"  salida.json      Nombre del fichero donde se grabara la salida");
-            mensaje.AppendLine(@"  certificado.pfx: Nombre del fichero con el certificado a exportar (solo para el tipo 3)");
-            mensaje.AppendLine(@"  password:        contraseña del certificado digital a exportar (solo para el tipo 3)");
+            mensaje.AppendLine(@"  certificado.pfx: Nombre del fichero con el certificado a exportar)");
+            mensaje.AppendLine(@"  password:        contraseña del certificado digital a exportar)");
             mensaje.AppendLine("\nPulse una tecla para continuar");
 
             string texto = mensaje.ToString();
