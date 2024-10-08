@@ -92,12 +92,7 @@ namespace dseCertificados
                     case 1:
                         ////Obtiene datos de los certificados instalados en el equipo
                         gestion.cargarCertificadosAlmacen();
-                        (string mensajeSalida, bool resultadoExportaDatos) = gestion.exportarPropiedadesCertificados();
-                        if (resultadoExportaDatos)
-                        {
-                            gestionCertificados gestionCertificados = new gestionCertificados();
-                            mensajeSalida = gestionCertificados.ajusteSalida(mensajeSalida);
-                        }
+                        (string mensajeSalida, bool resultadoExportaDatos) = gestion.exportarPropiedadesCertificados(true);
                         GrabarSalida(mensajeSalida, ficheroSalida);
                         GrabarSalida("OK", ficheroResultado);
                         SalirAplicacion("");

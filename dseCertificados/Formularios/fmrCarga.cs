@@ -67,13 +67,11 @@ namespace dseCertificados
                 if (resultado1)
                 {
                     //Si la lectura del certificado es correcta, se leen las propiedades
-                    (string propiedadesCertificados, bool resultado2) = gestion.exportarPropiedadesCertificados();
+                    (string propiedadesCertificados, bool resultado2) = gestion.exportarPropiedadesCertificados(true);
                     
                     if (resultado2)
                     {
                     //Si se han podido leer las propiedades, se ajusta el Json recibido a la salida que se espera con letras en vez de nombres de propiedades
-                        gestionCertificados gestionCertificados = new gestionCertificados();
-                        propiedadesCertificados = gestionCertificados.ajusteSalida(propiedadesCertificados);
                         Program.GrabarSalida(propiedadesCertificados, Program.ficheroSalida);
 
                         //Se obtiene el nº de serie y se exporta una copia del certificado con extension .da1
