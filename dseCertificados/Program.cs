@@ -3,7 +3,6 @@ using System.IO;
 using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Windows.Forms;
-using dseCertificados.Formularios;
 using GestionCertificadosDigitales;
 using gestionesAEAT.Formularios;
 
@@ -108,21 +107,8 @@ namespace dseCertificados
                         Application.EnableVisualStyles();
                         Application.SetCompatibleTextRenderingDefault(false);
 
-                        //using (frmCarga frmCarga = new frmCarga())
-                        //{
-                        //    frmCarga.ShowDialog();
-                        //}
-                        //using (frmPrincipal frmPrincipal = new frmPrincipal(gestion))
-                        //{
-                        //    frmPrincipal.ShowDialog();
-                        //}
-                        //using (frmSeleccion frmSeleccion = new frmSeleccion(gestion))
-                        //{
-                        //    frmSeleccion.ShowDialog();
-                        //}
+                        //Abre el formulario de seleccion de certificados por defecto
                         Application.Run(new frmSeleccion(gestion));
-                        //frmSeleccion frmSeleccion = new frmSeleccion(gestion);
-                        //frmSeleccion.Show();
 
                         break;
 

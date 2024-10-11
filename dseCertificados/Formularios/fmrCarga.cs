@@ -18,6 +18,7 @@ namespace dseCertificados
 
         public X509Certificate2 certificadoSeleccionado { get; set; }
 
+        //Variables para poder mover los formularios
         private bool mouseDown;
         private Point startPoint;
 
@@ -73,13 +74,17 @@ namespace dseCertificados
                 password = txtPassword1.Text;
                 string mensaje1 = string.Empty;
                 bool resultado = false;
+
+                //Si se ha cargado un certificado desde el lineal, el proceso cambia
                 if (Program.certificadoSeleccionado == null)
                 {
+                    //Se hace la lectura desde el fichero leido
                     (mensaje1, resultado) = gestion.leerCertificado(certificadoPath, password);
                 }
                 else
                 {
-                    gestion.cargarDatosCertificado(Program.certificadoSeleccionado);
+                    //Se cargan las propiedades del certificado que se pasa por parametro y luego se exportan.
+                    gestion.cargarDatosCertificado(Program.certificadoSeleccionado,password);
                     (mensaje1, resultado) = gestion.exportarPropiedadesCertificados(true);
                 }
 
@@ -88,12 +93,20 @@ namespace dseCertificados
                     //Si se han podido leer las propiedades, se ajusta el Json recibido a la salida que se espera con letras en vez de nombres de propiedades
                     Program.GrabarSalida(mensaje1, Program.ficheroSalida);
 
-                    //Se obtiene el nº de serie y se exporta una copia del certificado con extension .da1
+                    //Se obtiene el nº de serie del certificado cargado para pasarlo al metodo de exportacion
                     string serieCertificado = gestion.consultaPropiedades(GestionarCertificados.nombresPropiedades.serieCertificado);
+
                     (X509Certificate2 certificado, bool resultado3) = gestion.exportaCertificadoDigital(serieCertificado);
                     if (resultado3)
                     {
-                        byte[] datosCertificado = Program.certificadoSeleccionado.Export(X509ContentType.Pfx, password);
+                        //Es necesario un arreglo de bytes para marcar el certificado como exportable, y debe pasarse la contraseña para poder gestionarlo.
+                        byte[] certificadoBytes = certificado.Export(X509ContentType.Pfx,password);
+                        X509Certificate2 certificadoSalida = new X509Certificate2(certificadoBytes, password, X509KeyStorageFlags.Exportable);
+
+                        //Una vez los datos del certificado preparados se genera otro arreglo de bytes para exportar el certificado
+                        byte[] datosCertificado = certificadoSalida.Export(X509ContentType.Pfx, password);
+
+                        //Se modifica la extension del fichero por seguridad
                         string salidaCertificado = Path.ChangeExtension(Program.ficheroSalida, "da1");
                         File.WriteAllBytes(salidaCertificado, datosCertificado);
                         Program.GrabarSalida("OK", Program.ficheroResultado);
@@ -106,18 +119,6 @@ namespace dseCertificados
                 }
 
                 Environment.Exit(0);
-
-
-
-                //else
-                //{
-                //    MessageBox.Show(mensaje1, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                //    //Environment.Exit(0);
-                //    txtPassword1.Text = "";
-                //    txtPassword2.Text = "";
-                //    txtPassword1.Focus();
-                //    btnCargar.Enabled = false;
-                //}
             }
 
         }

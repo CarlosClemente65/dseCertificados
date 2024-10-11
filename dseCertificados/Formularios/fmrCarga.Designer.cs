@@ -264,7 +264,7 @@
             this.Titulo.AutoSize = true;
             this.Titulo.Font = new System.Drawing.Font("Verdana", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.Titulo.ForeColor = System.Drawing.Color.White;
-            this.Titulo.Location = new System.Drawing.Point(8, 10);
+            this.Titulo.Location = new System.Drawing.Point(8, 14);
             this.Titulo.Name = "Titulo";
             this.Titulo.Size = new System.Drawing.Size(189, 18);
             this.Titulo.TabIndex = 9;

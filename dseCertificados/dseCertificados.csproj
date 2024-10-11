@@ -94,12 +94,6 @@
     <Compile Include="Formularios\fmrCarga.Designer.cs">
       <DependentUpon>fmrCarga.cs</DependentUpon>
     </Compile>
-    <Compile Include="Formularios\frmPrincipal.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Formularios\frmPrincipal.Designer.cs">
-      <DependentUpon>frmPrincipal.cs</DependentUpon>
-    </Compile>
     <Compile Include="Formularios\frmSeleccion.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -129,9 +123,6 @@
   <ItemGroup>
     <EmbeddedResource Include="Formularios\fmrCarga.resx">
       <DependentUpon>fmrCarga.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Formularios\frmPrincipal.resx">
-      <DependentUpon>frmPrincipal.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Formularios\frmSeleccion.resx">
       <DependentUpon>frmSeleccion.cs</DependentUpon>

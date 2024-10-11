@@ -30,6 +30,7 @@ namespace gestionesAEAT.Formularios
             {"huellaCertificado", GestionarCertificados.nombresPropiedades.huellaCertificado }
         };
 
+        //Variables necesarias para mover el formulario
         private bool mouseDown;
         private Point startPoint;
 
@@ -38,8 +39,11 @@ namespace gestionesAEAT.Formularios
         {
             InitializeComponent();
             this.instanciaCertificado = instanciaCertificado;
+
+            //Hace la carga de los certificados almacenados en el equipo y los ordena por nombre
             instanciaCertificado.cargarCertificadosAlmacen();
             instanciaCertificado.ordenarCertificados(GestionarCertificados.nombresPropiedades.titularCertificado,true);
+            
             certificadoSeleccionado = new PropiedadesCertificados();
             certificados = instanciaCertificado.relacionCertificados();
             rellenarDGV(certificados);
@@ -90,7 +94,6 @@ namespace gestionesAEAT.Formularios
         }
 
 
-
         private void frmSeleccion_Load(object sender, EventArgs e)
         {
             txtBusqueda.Focus();
@@ -105,7 +108,6 @@ namespace gestionesAEAT.Formularios
 
         private void txtBusqueda_TextChanged(object sender, EventArgs e)
         {
-            //gestionCertificados proceso = gestionCertificados.ObtenerInstancia();
             List<PropiedadesCertificados> certificados = instanciaCertificado.relacionCertificados();
             if (certificados != null)
             {
@@ -130,7 +132,6 @@ namespace gestionesAEAT.Formularios
                 DataGridViewCell celda = dgvCertificados.Rows[indice].Cells["serieCertificado"];
                 if (celda != null)
                 {
-                    //certificadoSeleccionado.serieCertificado = celda.Value.ToString();
                     string serieCertificado = celda.Value.ToString();
                     (X509Certificate2 certificado, bool resultado) = instanciaCertificado.exportaCertificadoDigital(serieCertificado);
                     if (resultado)
@@ -169,7 +170,7 @@ namespace gestionesAEAT.Formularios
             EstadoOrdenacion estado = estadosOrdenacion[columna];
 
             //Carga en la variable los certificado ordenados
-            if (equivalenciaColumnasEnum.TryGetValue(estado.CampoOrden, out GestionarCertificados.nombresPropiedades propiedadEnum)) ;
+            if (equivalenciaColumnasEnum.TryGetValue(estado.CampoOrden, out GestionarCertificados.nombresPropiedades propiedadEnum));
             var certificados = instanciaCertificado.ordenarCertificados(propiedadEnum, estado.Ascendente);
 
             //Cambia el estado para la siguiente ordenacion hacerlo a la inversa
@@ -186,7 +187,7 @@ namespace gestionesAEAT.Formularios
                 mouseDown = true;
                 startPoint = new Point(e.X, e.Y);
                 // Desactiva la captura de eventos del control
-                this.Capture = false;
+                Capture = false;
             }
         }
 
@@ -194,11 +195,11 @@ namespace gestionesAEAT.Formularios
         {
             if (mouseDown)
             {
-                this.Location = new Point(
-                    this.Location.X - startPoint.X + e.X,
-                    this.Location.Y - startPoint.Y + e.Y);
+                Location = new Point(
+                Location.X - startPoint.X + e.X,
+                Location.Y - startPoint.Y + e.Y);
 
-                this.Update();
+                Update();
             }
         }
 
