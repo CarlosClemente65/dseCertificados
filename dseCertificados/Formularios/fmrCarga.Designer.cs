@@ -42,12 +42,7 @@
             this.imageList1 = new System.Windows.Forms.ImageList(this.components);
             this.ofdSeleccion = new System.Windows.Forms.OpenFileDialog();
             this.panelDatos = new System.Windows.Forms.Panel();
-            this.Titulo = new System.Windows.Forms.Label();
-            this.btnCerrar = new System.Windows.Forms.Button();
-            this.btnMinimizar = new System.Windows.Forms.Button();
-            this.panelTitulo = new System.Windows.Forms.Panel();
             this.panelDatos.SuspendLayout();
-            this.panelTitulo.SuspendLayout();
             this.SuspendLayout();
             // 
             // label1
@@ -181,73 +176,11 @@
             this.panelDatos.Controls.Add(this.btnCargar);
             this.panelDatos.Controls.Add(this.label3);
             this.panelDatos.Controls.Add(this.txtPassword2);
-            this.panelDatos.Location = new System.Drawing.Point(7, 47);
+            this.panelDatos.Location = new System.Drawing.Point(8, 8);
             this.panelDatos.Name = "panelDatos";
             this.panelDatos.Padding = new System.Windows.Forms.Padding(5);
             this.panelDatos.Size = new System.Drawing.Size(592, 139);
             this.panelDatos.TabIndex = 8;
-            this.panelDatos.MouseDown += new System.Windows.Forms.MouseEventHandler(this.panelMouseDown);
-            this.panelDatos.MouseMove += new System.Windows.Forms.MouseEventHandler(this.panelMouseMove);
-            this.panelDatos.MouseUp += new System.Windows.Forms.MouseEventHandler(this.panelMouseUp);
-            // 
-            // Titulo
-            // 
-            this.Titulo.AutoSize = true;
-            this.Titulo.Font = new System.Drawing.Font("Verdana", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.Titulo.ForeColor = System.Drawing.Color.White;
-            this.Titulo.Location = new System.Drawing.Point(8, 10);
-            this.Titulo.Name = "Titulo";
-            this.Titulo.Size = new System.Drawing.Size(189, 18);
-            this.Titulo.TabIndex = 9;
-            this.Titulo.Text = "Seleccionar certificado";
-            // 
-            // btnCerrar
-            // 
-            this.btnCerrar.BackColor = System.Drawing.Color.DodgerBlue;
-            this.btnCerrar.FlatAppearance.BorderSize = 0;
-            this.btnCerrar.FlatAppearance.MouseOverBackColor = System.Drawing.Color.PowderBlue;
-            this.btnCerrar.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnCerrar.Font = new System.Drawing.Font("Verdana", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnCerrar.ImageIndex = 2;
-            this.btnCerrar.ImageList = this.imageList1;
-            this.btnCerrar.Location = new System.Drawing.Point(552, 5);
-            this.btnCerrar.Name = "btnCerrar";
-            this.btnCerrar.Size = new System.Drawing.Size(30, 30);
-            this.btnCerrar.TabIndex = 10;
-            this.btnCerrar.UseVisualStyleBackColor = false;
-            this.btnCerrar.Click += new System.EventHandler(this.btnCerrar_Click);
-            // 
-            // btnMinimizar
-            // 
-            this.btnMinimizar.BackColor = System.Drawing.Color.DodgerBlue;
-            this.btnMinimizar.FlatAppearance.BorderSize = 0;
-            this.btnMinimizar.FlatAppearance.MouseOverBackColor = System.Drawing.Color.PowderBlue;
-            this.btnMinimizar.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnMinimizar.Font = new System.Drawing.Font("Verdana", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnMinimizar.ImageIndex = 3;
-            this.btnMinimizar.ImageList = this.imageList1;
-            this.btnMinimizar.Location = new System.Drawing.Point(516, 5);
-            this.btnMinimizar.Name = "btnMinimizar";
-            this.btnMinimizar.Size = new System.Drawing.Size(30, 30);
-            this.btnMinimizar.TabIndex = 11;
-            this.btnMinimizar.UseVisualStyleBackColor = false;
-            this.btnMinimizar.Click += new System.EventHandler(this.btnMinimizar_Click);
-            // 
-            // panelTitulo
-            // 
-            this.panelTitulo.BackColor = System.Drawing.Color.DodgerBlue;
-            this.panelTitulo.Controls.Add(this.btnCerrar);
-            this.panelTitulo.Controls.Add(this.Titulo);
-            this.panelTitulo.Controls.Add(this.btnMinimizar);
-            this.panelTitulo.Location = new System.Drawing.Point(7, 7);
-            this.panelTitulo.Margin = new System.Windows.Forms.Padding(5);
-            this.panelTitulo.Name = "panelTitulo";
-            this.panelTitulo.Padding = new System.Windows.Forms.Padding(5, 10, 5, 10);
-            this.panelTitulo.Size = new System.Drawing.Size(592, 48);
-            this.panelTitulo.TabIndex = 12;
-            this.panelTitulo.MouseDown += new System.Windows.Forms.MouseEventHandler(this.panelMouseDown);
-            this.panelTitulo.MouseMove += new System.Windows.Forms.MouseEventHandler(this.panelMouseMove);
-            this.panelTitulo.MouseUp += new System.Windows.Forms.MouseEventHandler(this.panelMouseUp);
             // 
             // frmCarga
             // 
@@ -256,9 +189,8 @@
             this.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.BackColor = System.Drawing.Color.PowderBlue;
             this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
-            this.ClientSize = new System.Drawing.Size(609, 195);
+            this.ClientSize = new System.Drawing.Size(609, 157);
             this.Controls.Add(this.panelDatos);
-            this.Controls.Add(this.panelTitulo);
             this.Font = new System.Drawing.Font("Verdana", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Margin = new System.Windows.Forms.Padding(5, 4, 5, 4);
@@ -269,8 +201,6 @@
             this.Text = "Seleccionar certificado";
             this.panelDatos.ResumeLayout(false);
             this.panelDatos.PerformLayout();
-            this.panelTitulo.ResumeLayout(false);
-            this.panelTitulo.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -288,10 +218,6 @@
         private System.Windows.Forms.ImageList imageList1;
         private System.Windows.Forms.OpenFileDialog ofdSeleccion;
         private System.Windows.Forms.Panel panelDatos;
-        private System.Windows.Forms.Label Titulo;
-        private System.Windows.Forms.Button btnCerrar;
-        private System.Windows.Forms.Button btnMinimizar;
         private System.Windows.Forms.ImageList imageList2;
-        private System.Windows.Forms.Panel panelTitulo;
     }
 }

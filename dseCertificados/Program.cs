@@ -2,6 +2,7 @@
 using System.IO;
 using System.Text;
 using System.Windows.Forms;
+using dseCertificados.Formularios;
 using GestionCertificadosDigitales;
 
 namespace dseCertificados
@@ -104,9 +105,13 @@ namespace dseCertificados
                         Application.EnableVisualStyles();
                         Application.SetCompatibleTextRenderingDefault(false);
 
-                        using (frmCarga frmCarga = new frmCarga())
+                        //using (frmCarga frmCarga = new frmCarga())
+                        //{
+                        //    frmCarga.ShowDialog();
+                        //}
+                        using (frmPrincipal frmPrincipal = new frmPrincipal(gestion))
                         {
-                            frmCarga.ShowDialog();
+                            frmPrincipal.ShowDialog();
                         }
                         break;
 

@@ -21,12 +21,12 @@ namespace dseCertificados
         public frmCarga()
         {
             InitializeComponent();
-            panelDatos.MouseDown += panelMouseDown;
-            panelDatos.MouseUp += panelMouseUp;
-            panelDatos.MouseUp += panelMouseMove;
-            panelTitulo.MouseDown += panelMouseDown;
-            panelTitulo.MouseUp += panelMouseUp;
-            panelTitulo.MouseUp += panelMouseMove;
+            //panelDatos.MouseDown += panelMouseDown;
+            //panelDatos.MouseUp += panelMouseUp;
+            //panelDatos.MouseUp += panelMouseMove;
+            //panelTitulo.MouseDown += panelMouseDown;
+            //panelTitulo.MouseUp += panelMouseUp;
+            //panelTitulo.MouseUp += panelMouseMove;
 
         }
 
