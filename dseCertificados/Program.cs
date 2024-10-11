@@ -1,9 +1,11 @@
 ﻿using System;
 using System.IO;
+using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Windows.Forms;
 using dseCertificados.Formularios;
 using GestionCertificadosDigitales;
+using gestionesAEAT.Formularios;
 
 namespace dseCertificados
 {
@@ -14,6 +16,7 @@ namespace dseCertificados
         public static string ficheroResultado = "errores.sal";
         public static string ficheroCertificado = string.Empty;
         public static string passwordCertificado = string.Empty;
+        public static X509Certificate2 certificadoSeleccionado;
         static string mensaje = string.Empty;
 
 
@@ -109,10 +112,18 @@ namespace dseCertificados
                         //{
                         //    frmCarga.ShowDialog();
                         //}
-                        using (frmPrincipal frmPrincipal = new frmPrincipal(gestion))
-                        {
-                            frmPrincipal.ShowDialog();
-                        }
+                        //using (frmPrincipal frmPrincipal = new frmPrincipal(gestion))
+                        //{
+                        //    frmPrincipal.ShowDialog();
+                        //}
+                        //using (frmSeleccion frmSeleccion = new frmSeleccion(gestion))
+                        //{
+                        //    frmSeleccion.ShowDialog();
+                        //}
+                        Application.Run(new frmSeleccion(gestion));
+                        //frmSeleccion frmSeleccion = new frmSeleccion(gestion);
+                        //frmSeleccion.Show();
+
                         break;
 
                     case 3:
@@ -179,6 +190,15 @@ namespace dseCertificados
         public static void GrabarSalida(string mensajeSalida, string ficheroSalida)
         {
             File.WriteAllText(ficheroSalida, mensajeSalida);
+        }
+
+        public static void cambioFormulario (Form formularioActual, Form nuevoFormulario)
+        {
+            //Mostrar el nuevo formulario
+            nuevoFormulario.Show();
+
+            //Cerrar el formulario actual
+            formularioActual.Hide();
         }
     }
 }

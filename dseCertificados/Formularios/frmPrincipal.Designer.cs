@@ -93,7 +93,7 @@
             this.panelTitulo.Controls.Add(this.btnCerrar);
             this.panelTitulo.Controls.Add(this.Titulo);
             this.panelTitulo.Controls.Add(this.btnMinimizar);
-            this.panelTitulo.Location = new System.Drawing.Point(0, 0);
+            this.panelTitulo.Location = new System.Drawing.Point(0, -8);
             this.panelTitulo.Margin = new System.Windows.Forms.Padding(5);
             this.panelTitulo.Name = "panelTitulo";
             this.panelTitulo.Padding = new System.Windows.Forms.Padding(5, 10, 5, 10);

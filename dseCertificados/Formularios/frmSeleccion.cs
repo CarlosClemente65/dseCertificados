@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Security.Cryptography.X509Certificates;
 using System.Windows.Forms;
 using dseCertificados;
@@ -28,6 +29,9 @@ namespace gestionesAEAT.Formularios
             {"serieCertificado", GestionarCertificados.nombresPropiedades.serieCertificado },
             {"huellaCertificado", GestionarCertificados.nombresPropiedades.huellaCertificado }
         };
+
+        private bool mouseDown;
+        private Point startPoint;
 
 
         public frmSeleccion(GestionarCertificados instanciaCertificado)
@@ -126,10 +130,18 @@ namespace gestionesAEAT.Formularios
                 DataGridViewCell celda = dgvCertificados.Rows[indice].Cells["serieCertificado"];
                 if (celda != null)
                 {
-                    certificadoSeleccionado.serieCertificado = celda.Value.ToString();
+                    //certificadoSeleccionado.serieCertificado = celda.Value.ToString();
+                    string serieCertificado = celda.Value.ToString();
+                    (X509Certificate2 certificado, bool resultado) = instanciaCertificado.exportaCertificadoDigital(serieCertificado);
+                    if (resultado)
+                    {
+                        Program.certificadoSeleccionado = certificado;
+                        frmCarga frmCarga = new frmCarga();
+                        Program.cambioFormulario(this, frmCarga);
+                        frmCarga.CargarDatos(Program.certificadoSeleccionado);
+                    }
                 }
             }
-            this.Close();
         }
 
         private void btnBorrar_Click(object sender, EventArgs e)
@@ -165,6 +177,51 @@ namespace gestionesAEAT.Formularios
 
             //Rellena el formulario con los certificado ya ordenados
             rellenarDGV(certificados);
+        }
+
+        private void panelMouseDown(object sender, MouseEventArgs e)
+        {
+            if (e.Button == MouseButtons.Left)
+            {
+                mouseDown = true;
+                startPoint = new Point(e.X, e.Y);
+                // Desactiva la captura de eventos del control
+                this.Capture = false;
+            }
+        }
+
+        private void panelMouseMove(object sender, MouseEventArgs e)
+        {
+            if (mouseDown)
+            {
+                this.Location = new Point(
+                    this.Location.X - startPoint.X + e.X,
+                    this.Location.Y - startPoint.Y + e.Y);
+
+                this.Update();
+            }
+        }
+
+        private void panelMouseUp(object sender, MouseEventArgs e)
+        {
+            mouseDown = false;
+        }
+
+        private void btnCerrar_Click(object sender, EventArgs e)
+        {
+            string mensaje = $"Proceso cancelado por el usuario.";
+            Program.GrabarSalida(mensaje, Program.ficheroResultado);
+            Environment.Exit(0);
+        }
+
+        private void btnMinimizar_Click(object sender, EventArgs e)
+        {
+            this.WindowState = FormWindowState.Minimized;
+        }
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+            Program.cambioFormulario(this, new frmCarga());
         }
     }
 
