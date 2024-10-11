@@ -94,6 +94,12 @@
     <Compile Include="Formularios\fmrCarga.Designer.cs">
       <DependentUpon>fmrCarga.cs</DependentUpon>
     </Compile>
+    <Compile Include="Formularios\frmSeleccion.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Formularios\frmSeleccion.Designer.cs">
+      <DependentUpon>frmSeleccion.cs</DependentUpon>
+    </Compile>
     <Compile Include="gestionCertificados.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -110,10 +116,16 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="dse.ico" />
+    <None Include="Resources\cargar.png" />
+    <None Include="Resources\cancelar.png" />
+    <None Include="Resources\buscar.png" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Formularios\fmrCarga.resx">
       <DependentUpon>fmrCarga.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Formularios\frmSeleccion.resx">
+      <DependentUpon>frmSeleccion.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>

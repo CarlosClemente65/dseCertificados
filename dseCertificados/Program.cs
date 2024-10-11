@@ -1,8 +1,10 @@
 ﻿using System;
 using System.IO;
+using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Windows.Forms;
 using GestionCertificadosDigitales;
+using gestionesAEAT.Formularios;
 
 namespace dseCertificados
 {
@@ -13,6 +15,7 @@ namespace dseCertificados
         public static string ficheroResultado = "errores.sal";
         public static string ficheroCertificado = string.Empty;
         public static string passwordCertificado = string.Empty;
+        public static X509Certificate2 certificadoSeleccionado;
         static string mensaje = string.Empty;
 
 
@@ -104,10 +107,9 @@ namespace dseCertificados
                         Application.EnableVisualStyles();
                         Application.SetCompatibleTextRenderingDefault(false);
 
-                        using (frmCarga frmCarga = new frmCarga())
-                        {
-                            frmCarga.ShowDialog();
-                        }
+                        //Abre el formulario de seleccion de certificados por defecto
+                        Application.Run(new frmSeleccion(gestion));
+
                         break;
 
                     case 3:
@@ -174,6 +176,15 @@ namespace dseCertificados
         public static void GrabarSalida(string mensajeSalida, string ficheroSalida)
         {
             File.WriteAllText(ficheroSalida, mensajeSalida);
+        }
+
+        public static void cambioFormulario (Form formularioActual, Form nuevoFormulario)
+        {
+            //Mostrar el nuevo formulario
+            nuevoFormulario.Show();
+
+            //Cerrar el formulario actual
+            formularioActual.Hide();
         }
     }
 }
