@@ -84,7 +84,7 @@ namespace gestionesAEAT.Formularios
             dgvCertificados.Columns["serieCertificado"].HeaderText = "Nº serie certificado";
             dgvCertificados.Columns["serieCertificado"].Width = 250;
             dgvCertificados.Columns["serieCertificado"].DisplayIndex = 7;
-            dgvCertificados.Columns["nombreCertificado"].HeaderText = "Datos representante";
+            dgvCertificados.Columns["nombreCertificado"].HeaderText = "Nombre certificado";
             dgvCertificados.Columns["nombreCertificado"].Width = 300;
             dgvCertificados.Columns["nombreCertificado"].DisplayIndex = 6;
             dgvCertificados.Columns["huellaCertificado"].HeaderText = "Huella certificado";
@@ -111,8 +111,7 @@ namespace gestionesAEAT.Formularios
             List<PropiedadesCertificados> certificados = instanciaCertificado.relacionCertificados();
             if (certificados != null)
             {
-                //Nota: crear metodo para que se pueda buscar en cualquier campo (ahora esta puesto solo en el nombre del certificado)
-                certificados = instanciaCertificado.filtrarCertificadosNombre(txtBusqueda.Text);
+                certificados = instanciaCertificado.filtrarCertificados(txtBusqueda.Text);
                 rellenarDGV(certificados);
             }
         }

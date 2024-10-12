@@ -42,6 +42,10 @@ namespace dseCertificados
         private void btnBuscar_Click(object sender, EventArgs e)
         {
             txtNombre.Text = "";
+            if (Program.certificadoSeleccionado != null)
+            {
+                Program.certificadoSeleccionado = null;
+            }
 
             //Dialogo de seleccion del fichero
             OpenFileDialog ofdSelection = new OpenFileDialog();
@@ -84,14 +88,14 @@ namespace dseCertificados
                 else
                 {
                     //Se cargan las propiedades del certificado que se pasa por parametro y luego se exportan.
-                    gestion.cargarDatosCertificado(Program.certificadoSeleccionado,password);
+                    gestion.cargarDatosCertificado(Program.certificadoSeleccionado, password);
                     (mensaje1, resultado) = gestion.exportarPropiedadesCertificados(true);
                 }
 
                 if (resultado)
                 {
                     //Si se han podido leer las propiedades, se ajusta el Json recibido a la salida que se espera con letras en vez de nombres de propiedades
-                    Program.GrabarSalida(mensaje1, Program.ficheroSalida);
+                    (string mensajeSalida, bool resultadoExportaDatos) = gestion.exportarPropiedadesCertificados(true);
 
                     //Se obtiene el nº de serie del certificado cargado para pasarlo al metodo de exportacion
                     string serieCertificado = gestion.consultaPropiedades(GestionarCertificados.nombresPropiedades.serieCertificado);
@@ -99,8 +103,9 @@ namespace dseCertificados
                     (X509Certificate2 certificado, bool resultado3) = gestion.exportaCertificadoDigital(serieCertificado);
                     if (resultado3)
                     {
+                        Program.GrabarSalida(mensajeSalida, Program.ficheroSalida);
                         //Es necesario un arreglo de bytes para marcar el certificado como exportable, y debe pasarse la contraseña para poder gestionarlo.
-                        byte[] certificadoBytes = certificado.Export(X509ContentType.Pfx,password);
+                        byte[] certificadoBytes = certificado.Export(X509ContentType.Pfx, password);
                         X509Certificate2 certificadoSalida = new X509Certificate2(certificadoBytes, password, X509KeyStorageFlags.Exportable);
 
                         //Una vez los datos del certificado preparados se genera otro arreglo de bytes para exportar el certificado
