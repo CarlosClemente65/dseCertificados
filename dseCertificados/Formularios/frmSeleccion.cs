@@ -81,12 +81,12 @@ namespace gestionesAEAT.Formularios
             dgvCertificados.Columns["nombreRepresentante"].HeaderText = "Nombre representante";
             dgvCertificados.Columns["nombreRepresentante"].Width = 250;
             dgvCertificados.Columns["nombreRepresentante"].DisplayIndex = 5;
-            dgvCertificados.Columns["serieCertificado"].HeaderText = "Nº serie certificado";
-            dgvCertificados.Columns["serieCertificado"].Width = 250;
-            dgvCertificados.Columns["serieCertificado"].DisplayIndex = 7;
             dgvCertificados.Columns["nombreCertificado"].HeaderText = "Nombre certificado";
             dgvCertificados.Columns["nombreCertificado"].Width = 300;
             dgvCertificados.Columns["nombreCertificado"].DisplayIndex = 6;
+            dgvCertificados.Columns["serieCertificado"].HeaderText = "Nº serie certificado";
+            dgvCertificados.Columns["serieCertificado"].Width = 250;
+            dgvCertificados.Columns["serieCertificado"].DisplayIndex = 7;
             dgvCertificados.Columns["huellaCertificado"].HeaderText = "Huella certificado";
             dgvCertificados.Columns["huellaCertificado"].Width = 300;
             dgvCertificados.Columns["huellaCertificado"].DisplayIndex = 8;
