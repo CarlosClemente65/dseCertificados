@@ -34,11 +34,12 @@
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle6 = new System.Windows.Forms.DataGridViewCellStyle();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(frmSeleccion));
             this.panelCertificados = new System.Windows.Forms.Panel();
+            this.dgvCertificados = new System.Windows.Forms.DataGridView();
             this.button2 = new System.Windows.Forms.Button();
             this.label3 = new System.Windows.Forms.Label();
-            this.dgvCertificados = new System.Windows.Forms.DataGridView();
             this.label1 = new System.Windows.Forms.Label();
             this.panelBotones = new System.Windows.Forms.Panel();
+            this.label4 = new System.Windows.Forms.Label();
             this.btnBorrar = new System.Windows.Forms.Button();
             this.txtBusqueda = new System.Windows.Forms.TextBox();
             this.label2 = new System.Windows.Forms.Label();
@@ -49,7 +50,6 @@
             this.imageList1 = new System.Windows.Forms.ImageList(this.components);
             this.button3 = new System.Windows.Forms.Button();
             this.Titulo = new System.Windows.Forms.Label();
-            this.label4 = new System.Windows.Forms.Label();
             this.panelCertificados.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvCertificados)).BeginInit();
             this.panelBotones.SuspendLayout();
@@ -75,32 +75,6 @@
             this.panelCertificados.MouseDown += new System.Windows.Forms.MouseEventHandler(this.panelMouseDown);
             this.panelCertificados.MouseMove += new System.Windows.Forms.MouseEventHandler(this.panelMouseMove);
             this.panelCertificados.MouseUp += new System.Windows.Forms.MouseEventHandler(this.panelMouseUp);
-            // 
-            // button2
-            // 
-            this.button2.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left)));
-            this.button2.BackColor = System.Drawing.SystemColors.ButtonFace;
-            this.button2.Font = new System.Drawing.Font("Calibri", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.button2.ForeColor = System.Drawing.Color.Black;
-            this.button2.Location = new System.Drawing.Point(765, 5);
-            this.button2.Margin = new System.Windows.Forms.Padding(5);
-            this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(112, 24);
-            this.button2.TabIndex = 5;
-            this.button2.Text = "Leer fichero";
-            this.button2.UseVisualStyleBackColor = false;
-            this.button2.Click += new System.EventHandler(this.button2_Click);
-            // 
-            // label3
-            // 
-            this.label3.AutoSize = true;
-            this.label3.Font = new System.Drawing.Font("Calibri", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)), true);
-            this.label3.Location = new System.Drawing.Point(176, 12);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(165, 15);
-            this.label3.TabIndex = 5;
-            this.label3.Text = "(doble clic para seleccionar)";
             // 
             // dgvCertificados
             // 
@@ -158,6 +132,32 @@
             this.dgvCertificados.MouseMove += new System.Windows.Forms.MouseEventHandler(this.panelMouseMove);
             this.dgvCertificados.MouseUp += new System.Windows.Forms.MouseEventHandler(this.panelMouseUp);
             // 
+            // button2
+            // 
+            this.button2.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left)));
+            this.button2.BackColor = System.Drawing.SystemColors.ButtonFace;
+            this.button2.Font = new System.Drawing.Font("Calibri", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.button2.ForeColor = System.Drawing.Color.Black;
+            this.button2.Location = new System.Drawing.Point(765, 5);
+            this.button2.Margin = new System.Windows.Forms.Padding(5);
+            this.button2.Name = "button2";
+            this.button2.Size = new System.Drawing.Size(112, 24);
+            this.button2.TabIndex = 5;
+            this.button2.Text = "Leer fichero";
+            this.button2.UseVisualStyleBackColor = false;
+            this.button2.Click += new System.EventHandler(this.button2_Click);
+            // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Font = new System.Drawing.Font("Calibri", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)), true);
+            this.label3.Location = new System.Drawing.Point(176, 12);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(165, 15);
+            this.label3.TabIndex = 5;
+            this.label3.Text = "(doble clic para seleccionar)";
+            // 
             // label1
             // 
             this.label1.AutoSize = true;
@@ -188,6 +188,16 @@
             this.panelBotones.MouseDown += new System.Windows.Forms.MouseEventHandler(this.panelMouseDown);
             this.panelBotones.MouseMove += new System.Windows.Forms.MouseEventHandler(this.panelMouseMove);
             this.panelBotones.MouseUp += new System.Windows.Forms.MouseEventHandler(this.panelMouseUp);
+            // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.Font = new System.Drawing.Font("Calibri", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)), true);
+            this.label4.Location = new System.Drawing.Point(238, 12);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(234, 15);
+            this.label4.TabIndex = 6;
+            this.label4.Text = "(nombre o NIF del titular o representante)";
             // 
             // btnBorrar
             // 
@@ -231,6 +241,9 @@
             this.btnCancelar.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.btnCancelar.BackColor = System.Drawing.SystemColors.ButtonFace;
+            this.btnCancelar.FlatAppearance.BorderColor = System.Drawing.Color.Silver;
+            this.btnCancelar.FlatAppearance.MouseOverBackColor = System.Drawing.Color.LightGray;
+            this.btnCancelar.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnCancelar.Font = new System.Drawing.Font("Calibri", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnCancelar.ForeColor = System.Drawing.Color.Black;
             this.btnCancelar.Location = new System.Drawing.Point(777, 10);
@@ -247,6 +260,9 @@
             this.btnSeleccion.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left)));
             this.btnSeleccion.BackColor = System.Drawing.SystemColors.ButtonFace;
+            this.btnSeleccion.FlatAppearance.BorderColor = System.Drawing.Color.Silver;
+            this.btnSeleccion.FlatAppearance.MouseOverBackColor = System.Drawing.Color.LightGray;
+            this.btnSeleccion.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnSeleccion.Font = new System.Drawing.Font("Calibri", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnSeleccion.ForeColor = System.Drawing.Color.Black;
             this.btnSeleccion.Location = new System.Drawing.Point(14, 14);
@@ -327,16 +343,6 @@
             this.Titulo.Size = new System.Drawing.Size(189, 18);
             this.Titulo.TabIndex = 9;
             this.Titulo.Text = "Seleccionar certificado";
-            // 
-            // label4
-            // 
-            this.label4.AutoSize = true;
-            this.label4.Font = new System.Drawing.Font("Calibri", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)), true);
-            this.label4.Location = new System.Drawing.Point(238, 12);
-            this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(234, 15);
-            this.label4.TabIndex = 6;
-            this.label4.Text = "(nombre o NIF del titular o representante)";
             // 
             // frmSeleccion
             // 
