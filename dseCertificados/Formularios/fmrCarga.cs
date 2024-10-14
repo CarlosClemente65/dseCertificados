@@ -14,7 +14,7 @@ namespace dseCertificados
         string certificadoPath = string.Empty;
 
         string password = string.Empty;
-        GestionarCertificados gestion = new GestionarCertificados();
+        GestionarCertificados gestionCertificados = new GestionarCertificados();
 
         public X509Certificate2 certificadoSeleccionado { get; set; }
 
@@ -27,11 +27,11 @@ namespace dseCertificados
             InitializeComponent();
         }
 
-        public void CargarDatos(X509Certificate2 certificadoSeleccionado)
+        public void CargarDatos()
         {
-            if (certificadoSeleccionado != null)
+            if (Program.certificadoSeleccionado != null)
             {
-                txtNombre.Text = certificadoSeleccionado.FriendlyName ?? "Nombre del certificado no disponible";
+                txtNombre.Text = Program.certificadoSeleccionado.FriendlyName ?? "Nombre del certificado no disponible";
                 txtPassword1.Enabled = true;
                 txtPassword2.Enabled = true;
                 txtPassword1.Focus();
@@ -83,27 +83,28 @@ namespace dseCertificados
                 if (Program.certificadoSeleccionado == null)
                 {
                     //Se hace la lectura desde el fichero leido
-                    (mensaje1, resultado) = gestion.leerCertificado(certificadoPath, password);
+                    (mensaje1, resultado) = gestionCertificados.leerCertificado(certificadoPath, password);
                 }
                 else
                 {
                     //Se cargan las propiedades del certificado que se pasa por parametro y luego se exportan.
-                    gestion.cargarDatosCertificado(Program.certificadoSeleccionado, password);
-                    (mensaje1, resultado) = gestion.exportarPropiedadesCertificados(true);
+                    gestionCertificados.cargarDatosCertificado(Program.certificadoSeleccionado, password);
+                    (mensaje1, resultado) = gestionCertificados.exportarPropiedadesCertificados(true);
                 }
 
                 if (resultado)
                 {
                     //Si se han podido leer las propiedades, se ajusta el Json recibido a la salida que se espera con letras en vez de nombres de propiedades
-                    (string mensajeSalida, bool resultadoExportaDatos) = gestion.exportarPropiedadesCertificados(true);
+                    (string mensajeSalida, bool resultadoExportaDatos) = gestionCertificados.exportarPropiedadesCertificados(true);
 
                     //Se obtiene el nº de serie del certificado cargado para pasarlo al metodo de exportacion
-                    string serieCertificado = gestion.consultaPropiedades(GestionarCertificados.nombresPropiedades.serieCertificado);
+                    string serieCertificado = gestionCertificados.consultaPropiedades(GestionarCertificados.nombresPropiedades.serieCertificado);
 
-                    (X509Certificate2 certificado, bool resultado3) = gestion.exportaCertificadoDigital(serieCertificado);
+                    (X509Certificate2 certificado, bool resultado3) = gestionCertificados.exportaCertificadoDigital(serieCertificado, password);
                     if (resultado3)
                     {
                         Program.GrabarSalida(mensajeSalida, Program.ficheroSalida);
+
                         //Es necesario un arreglo de bytes para marcar el certificado como exportable, y debe pasarse la contraseña para poder gestionarlo.
                         byte[] certificadoBytes = certificado.Export(X509ContentType.Pfx, password);
                         X509Certificate2 certificadoSalida = new X509Certificate2(certificadoBytes, password, X509KeyStorageFlags.Exportable);
@@ -170,7 +171,7 @@ namespace dseCertificados
 
         private void button2_Click(object sender, EventArgs e)
         {
-            Program.cambioFormulario(this, new frmSeleccion(gestion));
+            Program.cambioFormulario(this, new frmSeleccion(gestionCertificados));
         }
 
         public void cargaCertificado(X509Certificate2 certificadoSeleccionado)

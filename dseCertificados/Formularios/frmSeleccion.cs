@@ -13,7 +13,7 @@ namespace gestionesAEAT.Formularios
         //Crea un diccionario para saber el orden de cada columna
         private Dictionary<string, EstadoOrdenacion> estadosOrdenacion;
 
-        private GestionarCertificados instanciaCertificado;
+        private GestionarCertificados gestionCertificados;
         public PropiedadesCertificados certificadoSeleccionado { get; set; }
         private List<PropiedadesCertificados> certificados;
 
@@ -38,7 +38,7 @@ namespace gestionesAEAT.Formularios
         public frmSeleccion(GestionarCertificados instanciaCertificado)
         {
             InitializeComponent();
-            this.instanciaCertificado = instanciaCertificado;
+            this.gestionCertificados = instanciaCertificado;
 
             //Hace la carga de los certificados almacenados en el equipo y los ordena por nombre
             instanciaCertificado.cargarCertificadosAlmacen();
@@ -108,10 +108,10 @@ namespace gestionesAEAT.Formularios
 
         private void txtBusqueda_TextChanged(object sender, EventArgs e)
         {
-            List<PropiedadesCertificados> certificados = instanciaCertificado.relacionCertificados();
+            List<PropiedadesCertificados> certificados = gestionCertificados.relacionCertificados();
             if (certificados != null)
             {
-                certificados = instanciaCertificado.filtrarCertificados(txtBusqueda.Text);
+                certificados = gestionCertificados.filtrarCertificados(txtBusqueda.Text);
                 rellenarDGV(certificados);
             }
         }
@@ -132,13 +132,13 @@ namespace gestionesAEAT.Formularios
                 if (celda != null)
                 {
                     string serieCertificado = celda.Value.ToString();
-                    (X509Certificate2 certificado, bool resultado) = instanciaCertificado.exportaCertificadoDigital(serieCertificado);
+                    (X509Certificate2 certificado, bool resultado) = gestionCertificados.exportaCertificadoDigital(serieCertificado);
                     if (resultado)
                     {
                         Program.certificadoSeleccionado = certificado;
                         frmCarga frmCarga = new frmCarga();
                         Program.cambioFormulario(this, frmCarga);
-                        frmCarga.CargarDatos(Program.certificadoSeleccionado);
+                        frmCarga.CargarDatos();
                     }
                 }
             }
@@ -170,7 +170,7 @@ namespace gestionesAEAT.Formularios
 
             //Carga en la variable los certificado ordenados
             if (equivalenciaColumnasEnum.TryGetValue(estado.CampoOrden, out GestionarCertificados.nombresPropiedades propiedadEnum));
-            var certificados = instanciaCertificado.ordenarCertificados(propiedadEnum, estado.Ascendente);
+            var certificados = gestionCertificados.ordenarCertificados(propiedadEnum, estado.Ascendente);
 
             //Cambia el estado para la siguiente ordenacion hacerlo a la inversa
             estado.Ascendente = !estado.Ascendente;
