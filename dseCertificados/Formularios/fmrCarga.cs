@@ -22,9 +22,30 @@ namespace dseCertificados
         private bool mouseDown;
         private Point startPoint;
 
+        //Permite mostrar un mensaje al pasar el curso por algun campo
+        private ToolTip mensaje;
+
+
         public frmCarga()
         {
             InitializeComponent();
+
+            //Mensaje a mostrar en la primera contraseña como una ayuda del contenido
+            mensaje = new ToolTip();
+            if (Program.certificadoSeleccionado != null)
+            {
+                txtClave1.Text = "Constraseña de protección del certificado";
+                mensaje.SetToolTip(txtClave1, "Permite proteger el certificado con una contraseña");
+                mensaje.SetToolTip(txtPassword1, "Permite proteger el certificado con una contraseña");
+            }
+            else
+            {
+                txtClave1.Text = "Constraseña de apertura del certificado";
+                mensaje.SetToolTip(txtClave1, "Contraseña que protege el fichero del certificado");
+                mensaje.SetToolTip(txtPassword1, "Contraseña que protege el fichero del certificado");
+
+            }
+
         }
 
         public void CargarDatos()
@@ -100,7 +121,7 @@ namespace dseCertificados
                     //Se obtiene el nº de serie del certificado cargado para pasarlo al metodo de exportacion
                     string serieCertificado = gestionCertificados.consultaPropiedades(GestionarCertificados.nombresPropiedades.serieCertificado);
 
-                    (X509Certificate2 certificado, bool resultado3) = gestionCertificados.exportaCertificadoDigital(serieCertificado, password);
+                    (X509Certificate2 certificado, bool resultado3) = gestionCertificados.exportaCertificadoDigital(serieCertificado);
                     if (resultado3)
                     {
                         Program.GrabarSalida(mensajeSalida, Program.ficheroSalida);
@@ -171,6 +192,7 @@ namespace dseCertificados
 
         private void button2_Click(object sender, EventArgs e)
         {
+            if (Program.certificadoSeleccionado != null) Program.certificadoSeleccionado = null;
             Program.cambioFormulario(this, new frmSeleccion(gestionCertificados));
         }
 

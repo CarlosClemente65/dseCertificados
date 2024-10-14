@@ -93,7 +93,7 @@ namespace dseCertificados
                 switch (tipo)
                 {
                     case 1:
-                        ////Obtiene datos de los certificados instalados en el equipo
+                        //Obtiene datos de los certificados instalados en el equipo
                         gestion.cargarCertificadosAlmacen();
                         (string mensajeSalida, bool resultadoExportaDatos) = gestion.exportarPropiedadesCertificados(true);
                         GrabarSalida(mensajeSalida, ficheroSalida);

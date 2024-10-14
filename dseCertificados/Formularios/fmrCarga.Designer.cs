@@ -32,8 +32,8 @@
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(frmCarga));
             this.label1 = new System.Windows.Forms.Label();
             this.txtNombre = new System.Windows.Forms.TextBox();
-            this.label2 = new System.Windows.Forms.Label();
-            this.label3 = new System.Windows.Forms.Label();
+            this.txtClave1 = new System.Windows.Forms.Label();
+            this.txtClave2 = new System.Windows.Forms.Label();
             this.txtPassword1 = new System.Windows.Forms.TextBox();
             this.txtPassword2 = new System.Windows.Forms.TextBox();
             this.btnCargar = new System.Windows.Forms.Button();
@@ -73,25 +73,25 @@
             this.txtNombre.Size = new System.Drawing.Size(540, 24);
             this.txtNombre.TabIndex = 1;
             // 
-            // label2
+            // txtClave1
             // 
-            this.label2.AutoSize = true;
-            this.label2.Font = new System.Drawing.Font("Verdana", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label2.Location = new System.Drawing.Point(12, 83);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(118, 14);
-            this.label2.TabIndex = 2;
-            this.label2.Text = "Clave certificado";
+            this.txtClave1.Font = new System.Drawing.Font("Verdana", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.txtClave1.Location = new System.Drawing.Point(12, 68);
+            this.txtClave1.Name = "txtClave1";
+            this.txtClave1.Size = new System.Drawing.Size(191, 28);
+            this.txtClave1.TabIndex = 2;
+            this.txtClave1.Text = "Contraseña de protección del certificado";
+            this.txtClave1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
-            // label3
+            // txtClave2
             // 
-            this.label3.AutoSize = true;
-            this.label3.Font = new System.Drawing.Font("Verdana", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label3.Location = new System.Drawing.Point(245, 83);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(94, 14);
-            this.label3.TabIndex = 3;
-            this.label3.Text = "Repetir clave";
+            this.txtClave2.Font = new System.Drawing.Font("Verdana", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.txtClave2.Location = new System.Drawing.Point(245, 68);
+            this.txtClave2.Name = "txtClave2";
+            this.txtClave2.Size = new System.Drawing.Size(201, 29);
+            this.txtClave2.TabIndex = 3;
+            this.txtClave2.Text = "Repetir contraseña";
+            this.txtClave2.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // txtPassword1
             // 
@@ -178,11 +178,11 @@
             this.panelDatos.BackColor = System.Drawing.Color.Lavender;
             this.panelDatos.Controls.Add(this.txtPassword1);
             this.panelDatos.Controls.Add(this.btnBuscar);
-            this.panelDatos.Controls.Add(this.label2);
+            this.panelDatos.Controls.Add(this.txtClave1);
             this.panelDatos.Controls.Add(this.txtNombre);
             this.panelDatos.Controls.Add(this.label1);
             this.panelDatos.Controls.Add(this.btnCargar);
-            this.panelDatos.Controls.Add(this.label3);
+            this.panelDatos.Controls.Add(this.txtClave2);
             this.panelDatos.Controls.Add(this.txtPassword2);
             this.panelDatos.Location = new System.Drawing.Point(9, 89);
             this.panelDatos.Name = "panelDatos";
@@ -334,8 +334,8 @@
 
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.TextBox txtNombre;
-        private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.Label txtClave1;
+        private System.Windows.Forms.Label txtClave2;
         private System.Windows.Forms.TextBox txtPassword1;
         private System.Windows.Forms.TextBox txtPassword2;
         private System.Windows.Forms.Button btnCargar;
