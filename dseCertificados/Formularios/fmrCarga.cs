@@ -34,13 +34,14 @@ namespace dseCertificados
             mensaje = new ToolTip();
             if (Program.certificadoSeleccionado != null)
             {
-                txtClave1.Text = "Constraseña de protección del certificado";
+                txtClave1.Text = "Asignar constraseña al certificado";
                 mensaje.SetToolTip(txtClave1, "Permite proteger el certificado con una contraseña");
                 mensaje.SetToolTip(txtPassword1, "Permite proteger el certificado con una contraseña");
+                btnBuscar.Enabled = false;
             }
             else
             {
-                txtClave1.Text = "Constraseña de apertura del certificado";
+                txtClave1.Text = "Constraseña de apertura del fichero";
                 mensaje.SetToolTip(txtClave1, "Contraseña que protege el fichero del certificado");
                 mensaje.SetToolTip(txtPassword1, "Contraseña que protege el fichero del certificado");
 
@@ -97,32 +98,32 @@ namespace dseCertificados
             else
             {
                 password = txtPassword1.Text;
-                string mensaje1 = string.Empty;
+                string mensajeSalida = string.Empty;
                 bool resultado = false;
 
                 //Si se ha cargado un certificado desde el lineal, el proceso cambia
                 if (Program.certificadoSeleccionado == null)
                 {
                     //Se hace la lectura desde el fichero leido
-                    (mensaje1, resultado) = gestionCertificados.leerCertificado(certificadoPath, password);
+                    (mensajeSalida, resultado) = gestionCertificados.leerCertificado(certificadoPath, password);
                 }
                 else
                 {
                     //Se cargan las propiedades del certificado que se pasa por parametro y luego se exportan.
                     gestionCertificados.cargarDatosCertificado(Program.certificadoSeleccionado, password);
-                    (mensaje1, resultado) = gestionCertificados.exportarPropiedadesCertificados(true);
+                    (mensajeSalida, resultado) = gestionCertificados.exportarPropiedadesCertificados(true);
                 }
 
                 if (resultado)
                 {
-                    //Si se han podido leer las propiedades, se ajusta el Json recibido a la salida que se espera con letras en vez de nombres de propiedades
-                    (string mensajeSalida, bool resultadoExportaDatos) = gestionCertificados.exportarPropiedadesCertificados(true);
+                    //Si se han podido leer los certificados y las propiedades, se ajusta el Json recibido a la salida que se espera con letras en vez de nombres de propiedades
+                    //(mensajeSalida, resultado) = gestionCertificados.exportarPropiedadesCertificados(true);
 
                     //Se obtiene el nº de serie del certificado cargado para pasarlo al metodo de exportacion
                     string serieCertificado = gestionCertificados.consultaPropiedades(GestionarCertificados.nombresPropiedades.serieCertificado);
 
-                    (X509Certificate2 certificado, bool resultado3) = gestionCertificados.exportaCertificadoDigital(serieCertificado);
-                    if (resultado3)
+                    (X509Certificate2 certificado, bool resultadoExportarCertificado) = gestionCertificados.exportaCertificadoDigital(serieCertificado);
+                    if (resultadoExportarCertificado)
                     {
                         Program.GrabarSalida(mensajeSalida, Program.ficheroSalida);
 
@@ -143,9 +144,18 @@ namespace dseCertificados
                     {
                         Program.GrabarSalida("No se ha podido exportar el certificado digital", Program.ficheroResultado);
                     }
+                    Environment.Exit(0);
+                }
+                else
+                {
+                    MessageBox.Show(mensajeSalida, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    txtPassword1.Text = "";
+                    txtPassword2.Text = "";
+                    txtPassword1.Focus();
+                    btnCargar.Enabled = false;
+
                 }
 
-                Environment.Exit(0);
             }
 
         }
@@ -199,6 +209,39 @@ namespace dseCertificados
         public void cargaCertificado(X509Certificate2 certificadoSeleccionado)
         {
             this.certificadoSeleccionado = certificadoSeleccionado;
+        }
+
+        private void mostrarPass1_Click(object sender, EventArgs e)
+        {
+            if (mostrarPass1.ImageIndex == 4)
+            {
+                mostrarPass1.ImageIndex = 5;
+                txtPassword1.PasswordChar = '\0';
+                txtPassword1.Focus();
+            }
+            else
+            {
+                mostrarPass1.ImageIndex = 4;
+                txtPassword1.PasswordChar = '*';
+                txtPassword1.Focus();
+            }
+
+        }
+
+        private void mostrarPass2_Click(object sender, EventArgs e)
+        {
+            if (mostrarPass2.ImageIndex == 4)
+            {
+                mostrarPass2.ImageIndex = 5;
+                txtPassword2.PasswordChar = '\0';
+                txtPassword2.Focus();
+            }
+            else
+            {
+                mostrarPass2.ImageIndex = 4;
+                txtPassword2.PasswordChar = '*';
+                txtPassword2.Focus();
+            }
         }
     }
 }

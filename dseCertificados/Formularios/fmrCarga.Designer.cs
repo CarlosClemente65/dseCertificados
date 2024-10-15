@@ -49,6 +49,8 @@
             this.Titulo = new System.Windows.Forms.Label();
             this.btnMinimizar = new System.Windows.Forms.Button();
             this.button2 = new System.Windows.Forms.Button();
+            this.mostrarPass1 = new System.Windows.Forms.Button();
+            this.mostrarPass2 = new System.Windows.Forms.Button();
             this.panelDatos.SuspendLayout();
             this.panelTitulo.SuspendLayout();
             this.SuspendLayout();
@@ -75,7 +77,7 @@
             // 
             // txtClave1
             // 
-            this.txtClave1.Font = new System.Drawing.Font("Verdana", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.txtClave1.Font = new System.Drawing.Font("Verdana", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.txtClave1.Location = new System.Drawing.Point(12, 68);
             this.txtClave1.Name = "txtClave1";
             this.txtClave1.Size = new System.Drawing.Size(191, 28);
@@ -85,7 +87,7 @@
             // 
             // txtClave2
             // 
-            this.txtClave2.Font = new System.Drawing.Font("Verdana", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.txtClave2.Font = new System.Drawing.Font("Verdana", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.txtClave2.Location = new System.Drawing.Point(245, 68);
             this.txtClave2.Name = "txtClave2";
             this.txtClave2.Size = new System.Drawing.Size(201, 29);
@@ -166,6 +168,8 @@
             this.imageList1.Images.SetKeyName(1, "cargar.png");
             this.imageList1.Images.SetKeyName(2, "cerrar.png");
             this.imageList1.Images.SetKeyName(3, "minimizar.png");
+            this.imageList1.Images.SetKeyName(4, "visible.png");
+            this.imageList1.Images.SetKeyName(5, "novisible.png");
             // 
             // ofdSeleccion
             // 
@@ -176,6 +180,8 @@
             // panelDatos
             // 
             this.panelDatos.BackColor = System.Drawing.Color.Lavender;
+            this.panelDatos.Controls.Add(this.mostrarPass2);
+            this.panelDatos.Controls.Add(this.mostrarPass1);
             this.panelDatos.Controls.Add(this.txtPassword1);
             this.panelDatos.Controls.Add(this.btnBuscar);
             this.panelDatos.Controls.Add(this.txtClave1);
@@ -299,6 +305,37 @@
             this.button2.UseVisualStyleBackColor = false;
             this.button2.Click += new System.EventHandler(this.button2_Click);
             // 
+            // mostrarPass1
+            // 
+            this.mostrarPass1.BackColor = System.Drawing.SystemColors.InactiveBorder;
+            this.mostrarPass1.FlatAppearance.BorderSize = 0;
+            this.mostrarPass1.FlatAppearance.MouseOverBackColor = System.Drawing.Color.PowderBlue;
+            this.mostrarPass1.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.mostrarPass1.ImageIndex = 4;
+            this.mostrarPass1.ImageList = this.imageList1;
+            this.mostrarPass1.Location = new System.Drawing.Point(176, 104);
+            this.mostrarPass1.Name = "mostrarPass1";
+            this.mostrarPass1.Size = new System.Drawing.Size(25, 20);
+            this.mostrarPass1.TabIndex = 8;
+            this.mostrarPass1.UseVisualStyleBackColor = false;
+            this.mostrarPass1.Click += new System.EventHandler(this.mostrarPass1_Click);
+            // 
+            // mostrarPass2
+            // 
+            this.mostrarPass2.BackColor = System.Drawing.SystemColors.InactiveBorder;
+            this.mostrarPass2.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
+            this.mostrarPass2.FlatAppearance.BorderSize = 0;
+            this.mostrarPass2.FlatAppearance.MouseOverBackColor = System.Drawing.Color.PowderBlue;
+            this.mostrarPass2.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.mostrarPass2.ImageIndex = 4;
+            this.mostrarPass2.ImageList = this.imageList1;
+            this.mostrarPass2.Location = new System.Drawing.Point(420, 104);
+            this.mostrarPass2.Name = "mostrarPass2";
+            this.mostrarPass2.Size = new System.Drawing.Size(25, 20);
+            this.mostrarPass2.TabIndex = 9;
+            this.mostrarPass2.UseVisualStyleBackColor = false;
+            this.mostrarPass2.Click += new System.EventHandler(this.mostrarPass2_Click);
+            // 
             // frmCarga
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
@@ -351,5 +388,7 @@
         private System.Windows.Forms.Label Titulo;
         private System.Windows.Forms.Button btnMinimizar;
         private System.Windows.Forms.Button button2;
+        private System.Windows.Forms.Button mostrarPass2;
+        private System.Windows.Forms.Button mostrarPass1;
     }
 }
