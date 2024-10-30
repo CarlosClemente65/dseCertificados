@@ -117,7 +117,7 @@ namespace dseCertificados
                 if (resultado)
                 {
                     //Si se han podido leer los certificados y las propiedades, se ajusta el Json recibido a la salida que se espera con letras en vez de nombres de propiedades
-                    //(mensajeSalida, resultado) = gestionCertificados.exportarPropiedadesCertificados(true);
+                    (mensajeSalida, resultado) = gestionCertificados.exportarPropiedadesCertificados(true);
 
                     //Se obtiene el nº de serie del certificado cargado para pasarlo al metodo de exportacion
                     string serieCertificado = gestionCertificados.consultaPropiedades(GestionarCertificados.nombresPropiedades.serieCertificado);
@@ -217,31 +217,17 @@ namespace dseCertificados
             {
                 mostrarPass1.ImageIndex = 5;
                 txtPassword1.PasswordChar = '\0';
+                txtPassword2.PasswordChar = '\0';
                 txtPassword1.Focus();
             }
             else
             {
                 mostrarPass1.ImageIndex = 4;
                 txtPassword1.PasswordChar = '*';
+                txtPassword2.PasswordChar = '*';
                 txtPassword1.Focus();
             }
 
-        }
-
-        private void mostrarPass2_Click(object sender, EventArgs e)
-        {
-            if (mostrarPass2.ImageIndex == 4)
-            {
-                mostrarPass2.ImageIndex = 5;
-                txtPassword2.PasswordChar = '\0';
-                txtPassword2.Focus();
-            }
-            else
-            {
-                mostrarPass2.ImageIndex = 4;
-                txtPassword2.PasswordChar = '*';
-                txtPassword2.Focus();
-            }
         }
     }
 }

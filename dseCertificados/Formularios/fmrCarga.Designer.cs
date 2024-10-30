@@ -42,6 +42,7 @@
             this.imageList1 = new System.Windows.Forms.ImageList(this.components);
             this.ofdSeleccion = new System.Windows.Forms.OpenFileDialog();
             this.panelDatos = new System.Windows.Forms.Panel();
+            this.mostrarPass1 = new System.Windows.Forms.Button();
             this.panelTitulo = new System.Windows.Forms.Panel();
             this.button1 = new System.Windows.Forms.Button();
             this.btnMinimiza = new System.Windows.Forms.Button();
@@ -49,8 +50,6 @@
             this.Titulo = new System.Windows.Forms.Label();
             this.btnMinimizar = new System.Windows.Forms.Button();
             this.button2 = new System.Windows.Forms.Button();
-            this.mostrarPass1 = new System.Windows.Forms.Button();
-            this.mostrarPass2 = new System.Windows.Forms.Button();
             this.panelDatos.SuspendLayout();
             this.panelTitulo.SuspendLayout();
             this.SuspendLayout();
@@ -180,7 +179,7 @@
             // panelDatos
             // 
             this.panelDatos.BackColor = System.Drawing.Color.Lavender;
-            this.panelDatos.Controls.Add(this.mostrarPass2);
+            this.panelDatos.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.panelDatos.Controls.Add(this.mostrarPass1);
             this.panelDatos.Controls.Add(this.txtPassword1);
             this.panelDatos.Controls.Add(this.btnBuscar);
@@ -190,14 +189,29 @@
             this.panelDatos.Controls.Add(this.btnCargar);
             this.panelDatos.Controls.Add(this.txtClave2);
             this.panelDatos.Controls.Add(this.txtPassword2);
-            this.panelDatos.Location = new System.Drawing.Point(9, 89);
+            this.panelDatos.Location = new System.Drawing.Point(9, 85);
             this.panelDatos.Name = "panelDatos";
             this.panelDatos.Padding = new System.Windows.Forms.Padding(5);
-            this.panelDatos.Size = new System.Drawing.Size(592, 139);
+            this.panelDatos.Size = new System.Drawing.Size(592, 143);
             this.panelDatos.TabIndex = 8;
             this.panelDatos.MouseDown += new System.Windows.Forms.MouseEventHandler(this.panelMouseDown);
             this.panelDatos.MouseMove += new System.Windows.Forms.MouseEventHandler(this.panelMouseMove);
             this.panelDatos.MouseUp += new System.Windows.Forms.MouseEventHandler(this.panelMouseUp);
+            // 
+            // mostrarPass1
+            // 
+            this.mostrarPass1.BackColor = System.Drawing.Color.Lavender;
+            this.mostrarPass1.FlatAppearance.BorderSize = 0;
+            this.mostrarPass1.FlatAppearance.MouseOverBackColor = System.Drawing.Color.PowderBlue;
+            this.mostrarPass1.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.mostrarPass1.ImageIndex = 4;
+            this.mostrarPass1.ImageList = this.imageList1;
+            this.mostrarPass1.Location = new System.Drawing.Point(211, 103);
+            this.mostrarPass1.Name = "mostrarPass1";
+            this.mostrarPass1.Size = new System.Drawing.Size(25, 20);
+            this.mostrarPass1.TabIndex = 8;
+            this.mostrarPass1.UseVisualStyleBackColor = false;
+            this.mostrarPass1.Click += new System.EventHandler(this.mostrarPass1_Click);
             // 
             // panelTitulo
             // 
@@ -207,11 +221,11 @@
             this.panelTitulo.Controls.Add(this.btnCerrar);
             this.panelTitulo.Controls.Add(this.Titulo);
             this.panelTitulo.Controls.Add(this.btnMinimizar);
-            this.panelTitulo.Location = new System.Drawing.Point(8, 10);
+            this.panelTitulo.Location = new System.Drawing.Point(0, 0);
             this.panelTitulo.Margin = new System.Windows.Forms.Padding(5);
             this.panelTitulo.Name = "panelTitulo";
             this.panelTitulo.Padding = new System.Windows.Forms.Padding(5, 10, 5, 10);
-            this.panelTitulo.Size = new System.Drawing.Size(592, 48);
+            this.panelTitulo.Size = new System.Drawing.Size(609, 48);
             this.panelTitulo.TabIndex = 14;
             this.panelTitulo.MouseDown += new System.Windows.Forms.MouseEventHandler(this.panelMouseDown);
             this.panelTitulo.MouseMove += new System.Windows.Forms.MouseEventHandler(this.panelMouseMove);
@@ -227,7 +241,7 @@
             this.button1.Font = new System.Drawing.Font("Verdana", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.button1.ImageIndex = 2;
             this.button1.ImageList = this.imageList1;
-            this.button1.Location = new System.Drawing.Point(554, 8);
+            this.button1.Location = new System.Drawing.Point(571, 8);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(30, 30);
             this.button1.TabIndex = 12;
@@ -244,7 +258,7 @@
             this.btnMinimiza.Font = new System.Drawing.Font("Verdana", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnMinimiza.ImageIndex = 3;
             this.btnMinimiza.ImageList = this.imageList1;
-            this.btnMinimiza.Location = new System.Drawing.Point(518, 8);
+            this.btnMinimiza.Location = new System.Drawing.Point(535, 8);
             this.btnMinimiza.Name = "btnMinimiza";
             this.btnMinimiza.Size = new System.Drawing.Size(30, 30);
             this.btnMinimiza.TabIndex = 13;
@@ -296,7 +310,7 @@
             this.button2.BackColor = System.Drawing.SystemColors.ButtonFace;
             this.button2.Font = new System.Drawing.Font("Calibri", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.button2.ForeColor = System.Drawing.Color.Black;
-            this.button2.Location = new System.Drawing.Point(478, 62);
+            this.button2.Location = new System.Drawing.Point(489, 55);
             this.button2.Margin = new System.Windows.Forms.Padding(5);
             this.button2.Name = "button2";
             this.button2.Size = new System.Drawing.Size(112, 24);
@@ -305,43 +319,12 @@
             this.button2.UseVisualStyleBackColor = false;
             this.button2.Click += new System.EventHandler(this.button2_Click);
             // 
-            // mostrarPass1
-            // 
-            this.mostrarPass1.BackColor = System.Drawing.SystemColors.InactiveBorder;
-            this.mostrarPass1.FlatAppearance.BorderSize = 0;
-            this.mostrarPass1.FlatAppearance.MouseOverBackColor = System.Drawing.Color.PowderBlue;
-            this.mostrarPass1.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.mostrarPass1.ImageIndex = 4;
-            this.mostrarPass1.ImageList = this.imageList1;
-            this.mostrarPass1.Location = new System.Drawing.Point(176, 104);
-            this.mostrarPass1.Name = "mostrarPass1";
-            this.mostrarPass1.Size = new System.Drawing.Size(25, 20);
-            this.mostrarPass1.TabIndex = 8;
-            this.mostrarPass1.UseVisualStyleBackColor = false;
-            this.mostrarPass1.Click += new System.EventHandler(this.mostrarPass1_Click);
-            // 
-            // mostrarPass2
-            // 
-            this.mostrarPass2.BackColor = System.Drawing.SystemColors.InactiveBorder;
-            this.mostrarPass2.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
-            this.mostrarPass2.FlatAppearance.BorderSize = 0;
-            this.mostrarPass2.FlatAppearance.MouseOverBackColor = System.Drawing.Color.PowderBlue;
-            this.mostrarPass2.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.mostrarPass2.ImageIndex = 4;
-            this.mostrarPass2.ImageList = this.imageList1;
-            this.mostrarPass2.Location = new System.Drawing.Point(420, 104);
-            this.mostrarPass2.Name = "mostrarPass2";
-            this.mostrarPass2.Size = new System.Drawing.Size(25, 20);
-            this.mostrarPass2.TabIndex = 9;
-            this.mostrarPass2.UseVisualStyleBackColor = false;
-            this.mostrarPass2.Click += new System.EventHandler(this.mostrarPass2_Click);
-            // 
             // frmCarga
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.BackColor = System.Drawing.Color.PowderBlue;
+            this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(200)))), ((int)(((byte)(235)))), ((int)(((byte)(250)))));
             this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
             this.ClientSize = new System.Drawing.Size(609, 236);
             this.Controls.Add(this.button2);
@@ -388,7 +371,6 @@
         private System.Windows.Forms.Label Titulo;
         private System.Windows.Forms.Button btnMinimizar;
         private System.Windows.Forms.Button button2;
-        private System.Windows.Forms.Button mostrarPass2;
         private System.Windows.Forms.Button mostrarPass1;
     }
 }
