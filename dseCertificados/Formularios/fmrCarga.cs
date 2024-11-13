@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Drawing;
 using System.IO;
+using System.Security.Cryptography;
 using System.Security.Cryptography.X509Certificates;
+using System.Text.RegularExpressions;
 using System.Windows.Forms;
 using GestionCertificadosDigitales;
 using gestionesAEAT.Formularios;
@@ -99,52 +101,72 @@ namespace dseCertificados
             {
                 password = txtPassword1.Text;
                 string mensajeSalida = string.Empty;
-                bool resultado = false;
+                string serieCertificado = string.Empty;
 
                 //Si se ha cargado un certificado desde el lineal, el proceso cambia
                 if (Program.certificadoSeleccionado == null)
                 {
+                    bool resultado = false;
                     //Se hace la lectura desde el fichero leido
                     (mensajeSalida, resultado) = gestionCertificados.leerCertificado(certificadoPath, password);
+                    if (resultado)
+                    {
+                        serieCertificado = gestionCertificados.consultaPropiedades(GestionarCertificados.nombresPropiedades.serieCertificado);
+                    }
                 }
                 else
                 {
                     //Se cargan las propiedades del certificado que se pasa por parametro y luego se exportan.
                     gestionCertificados.cargarDatosCertificado(Program.certificadoSeleccionado, password);
-                    (mensajeSalida, resultado) = gestionCertificados.exportarPropiedadesCertificados(true);
+
+                    //Comprueba si se ha podido cargar el numero de serie para que continue con el proceso
+                    serieCertificado = gestionCertificados.consultaPropiedades(GestionarCertificados.nombresPropiedades.serieCertificado);
                 }
 
-                if (resultado)
+                if (!string.IsNullOrEmpty(serieCertificado))
                 {
-                    //Si se han podido leer los certificados y las propiedades, se ajusta el Json recibido a la salida que se espera con letras en vez de nombres de propiedades
-                    (mensajeSalida, resultado) = gestionCertificados.exportarPropiedadesCertificados(true);
-
-                    //Se obtiene el nº de serie del certificado cargado para pasarlo al metodo de exportacion
-                    string serieCertificado = gestionCertificados.consultaPropiedades(GestionarCertificados.nombresPropiedades.serieCertificado);
-
+                    //Se obtiene el certificado segun el numero de serie que se pasa por parametro
                     (X509Certificate2 certificado, bool resultadoExportarCertificado) = gestionCertificados.exportaCertificadoDigital(serieCertificado);
+
                     if (resultadoExportarCertificado)
                     {
-                        Program.GrabarSalida(mensajeSalida, Program.ficheroSalida);
+                        try
+                        {
+                            //Es necesario un arreglo de bytes para marcar el certificado como exportable, y debe pasarse la contraseña para poder gestionarlo.
+                            byte[] certificadoBytes = certificado.Export(X509ContentType.Pfx, password);
+                            X509Certificate2 certificadoSalida = new X509Certificate2(certificadoBytes, password, X509KeyStorageFlags.Exportable);
 
-                        //Es necesario un arreglo de bytes para marcar el certificado como exportable, y debe pasarse la contraseña para poder gestionarlo.
-                        byte[] certificadoBytes = certificado.Export(X509ContentType.Pfx, password);
-                        X509Certificate2 certificadoSalida = new X509Certificate2(certificadoBytes, password, X509KeyStorageFlags.Exportable);
+                            //Una vez los datos del certificado preparados se genera otro arreglo de bytes para exportar el certificado
+                            byte[] datosCertificado = certificadoSalida.Export(X509ContentType.Pfx, password);
 
-                        //Una vez los datos del certificado preparados se genera otro arreglo de bytes para exportar el certificado
-                        byte[] datosCertificado = certificadoSalida.Export(X509ContentType.Pfx, password);
+                            //Se modifica la extension del fichero por seguridad
+                            string salidaCertificado = Path.ChangeExtension(Program.ficheroSalida, "da1");
+                            File.WriteAllBytes(salidaCertificado, datosCertificado);
+                            Program.GrabarSalida("OK", Program.ficheroResultado);
 
-                        //Se modifica la extension del fichero por seguridad
-                        string salidaCertificado = Path.ChangeExtension(Program.ficheroSalida, "da1");
-                        File.WriteAllBytes(salidaCertificado, datosCertificado);
-                        Program.GrabarSalida("OK", Program.ficheroResultado);
+                            //Si se han podido leer los certificados y las propiedades, se ajusta el Json recibido a la salida que se espera con letras en vez de nombres de propiedades
+                            bool resultado = false;
+                            (mensajeSalida, resultado) = gestionCertificados.exportarPropiedadesCertificados(true);
+                            Program.GrabarSalida(mensajeSalida, Program.ficheroSalida);
+                            Environment.Exit(0);
+                        }
+                        catch (CryptographicException ex)
+                        {
+                            MessageBox.Show("El certificado no es exportable. Debe estar instalado con la clave privada como exportable.", "Error de certificado", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+
+                            //Se borran los certificados digitales cargados para que se vuelvan a leer del almacen (si no se hace solo muestra en el lineal el ultimo seleccionado)
+                            gestionCertificados.limpiarCertificados();
+                            button2.PerformClick();
+                            //Program.GrabarSalida($"El certificado no es exportable.{Environment.NewLine}{ex}", Program.ficheroResultado);
+                        }
+
                     }
 
                     else
                     {
                         Program.GrabarSalida("No se ha podido exportar el certificado digital", Program.ficheroResultado);
+                        Environment.Exit(0);
                     }
-                    Environment.Exit(0);
                 }
                 else
                 {
@@ -153,7 +175,6 @@ namespace dseCertificados
                     txtPassword2.Text = "";
                     txtPassword1.Focus();
                     btnCargar.Enabled = false;
-
                 }
 
             }
@@ -228,6 +249,21 @@ namespace dseCertificados
                 txtPassword1.Focus();
             }
 
+        }
+
+        private void txtPassword1_Leave(object sender, EventArgs e)
+        {
+            if (txtPassword1.Text.Length > 0)
+            {
+                string patronPassword = @"^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,}$";
+                bool chequeoPassword = Regex.IsMatch(txtPassword1.Text, patronPassword);
+                if (!chequeoPassword)
+                {
+                    MessageBox.Show("La contraseña no es segura. Debe ser de al menos 8 caracteres y tener una letra minúscula, una mayúscula y un número", "Contraseña no válida", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    txtPassword1.Text = "";
+                    txtPassword1.Focus();
+                }
+            }
         }
     }
 }

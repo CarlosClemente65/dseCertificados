@@ -104,6 +104,7 @@
             this.txtPassword1.PasswordChar = '*';
             this.txtPassword1.Size = new System.Drawing.Size(193, 24);
             this.txtPassword1.TabIndex = 4;
+            this.txtPassword1.Leave += new System.EventHandler(this.txtPassword1_Leave);
             // 
             // txtPassword2
             // 

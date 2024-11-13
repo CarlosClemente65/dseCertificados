@@ -54,6 +54,9 @@ namespace dseCertificados
                         case 2:
                             ficheroSalida = argumentos[2];
                             ficheroResultado = Path.ChangeExtension(ficheroSalida, "sal");
+                            controlFicheros(ficheroSalida);
+                            controlFicheros(ficheroResultado);
+                            controlFicheros(Path.ChangeExtension(Program.ficheroSalida, "da1"));
 
                             break;
 
@@ -65,6 +68,11 @@ namespace dseCertificados
                             {
                                 passwordCertificado = argumentos[3];
                             }
+
+                            controlFicheros(ficheroCertificado);
+                            controlFicheros(ficheroSalida);
+                            controlFicheros(ficheroResultado);
+                            controlFicheros(Path.ChangeExtension(Program.ficheroSalida, "da1"));
 
                             break;
                     }
@@ -185,6 +193,14 @@ namespace dseCertificados
 
             //Cerrar el formulario actual
             formularioActual.Hide();
+        }
+
+        public static void controlFicheros (string fichero)
+        {
+            if (File.Exists(fichero))
+            {
+                File.Delete(fichero);
+            }
         }
     }
 }
