@@ -157,7 +157,6 @@ namespace dseCertificados
                             //Se borran los certificados digitales cargados para que se vuelvan a leer del almacen (si no se hace solo muestra en el lineal el ultimo seleccionado)
                             gestionCertificados.limpiarCertificados();
                             button2.PerformClick();
-                            //Program.GrabarSalida($"El certificado no es exportable.{Environment.NewLine}{ex}", Program.ficheroResultado);
                         }
 
                     }
@@ -255,11 +254,11 @@ namespace dseCertificados
         {
             if (txtPassword1.Text.Length > 0)
             {
-                string patronPassword = @"^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,}$";
+                string patronPassword = @"^(?=.*[A-Z])(?=.*[^\w\d\s])(?=.*\d).{8,}$";
                 bool chequeoPassword = Regex.IsMatch(txtPassword1.Text, patronPassword);
                 if (!chequeoPassword)
                 {
-                    MessageBox.Show("La contraseña no es segura. Debe ser de al menos 8 caracteres y tener una letra minúscula, una mayúscula y un número", "Contraseña no válida", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    MessageBox.Show("La contraseña no es segura. Debe tener una longitud mínima de 8 caracteres y que contenga al menos una letra mayúscula, un número y un caracter especial", "Contraseña no válida", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                     txtPassword1.Text = "";
                     txtPassword1.Focus();
                 }
