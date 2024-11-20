@@ -50,6 +50,7 @@
             this.Titulo = new System.Windows.Forms.Label();
             this.btnMinimizar = new System.Windows.Forms.Button();
             this.button2 = new System.Windows.Forms.Button();
+            this.txtProceso = new System.Windows.Forms.Label();
             this.panelDatos.SuspendLayout();
             this.panelTitulo.SuspendLayout();
             this.SuspendLayout();
@@ -77,19 +78,19 @@
             // txtClave1
             // 
             this.txtClave1.Font = new System.Drawing.Font("Verdana", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtClave1.Location = new System.Drawing.Point(12, 68);
+            this.txtClave1.Location = new System.Drawing.Point(12, 76);
             this.txtClave1.Name = "txtClave1";
-            this.txtClave1.Size = new System.Drawing.Size(191, 28);
+            this.txtClave1.Size = new System.Drawing.Size(191, 21);
             this.txtClave1.TabIndex = 2;
-            this.txtClave1.Text = "Contraseña de protección del certificado";
+            this.txtClave1.Text = "Contraseña del fichero";
             this.txtClave1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // txtClave2
             // 
             this.txtClave2.Font = new System.Drawing.Font("Verdana", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtClave2.Location = new System.Drawing.Point(245, 68);
+            this.txtClave2.Location = new System.Drawing.Point(245, 76);
             this.txtClave2.Name = "txtClave2";
-            this.txtClave2.Size = new System.Drawing.Size(201, 29);
+            this.txtClave2.Size = new System.Drawing.Size(201, 21);
             this.txtClave2.TabIndex = 3;
             this.txtClave2.Text = "Repetir contraseña";
             this.txtClave2.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -320,6 +321,17 @@
             this.button2.UseVisualStyleBackColor = false;
             this.button2.Click += new System.EventHandler(this.button2_Click);
             // 
+            // txtProceso
+            // 
+            this.txtProceso.Font = new System.Drawing.Font("Verdana", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.txtProceso.ForeColor = System.Drawing.Color.MidnightBlue;
+            this.txtProceso.Location = new System.Drawing.Point(8, 57);
+            this.txtProceso.Name = "txtProceso";
+            this.txtProceso.Size = new System.Drawing.Size(473, 18);
+            this.txtProceso.TabIndex = 14;
+            this.txtProceso.Text = "SSS";
+            this.txtProceso.TextAlign = System.Drawing.ContentAlignment.TopCenter;
+            // 
             // frmCarga
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
@@ -328,6 +340,7 @@
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(200)))), ((int)(((byte)(235)))), ((int)(((byte)(250)))));
             this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
             this.ClientSize = new System.Drawing.Size(609, 236);
+            this.Controls.Add(this.txtProceso);
             this.Controls.Add(this.button2);
             this.Controls.Add(this.panelTitulo);
             this.Controls.Add(this.panelDatos);
@@ -373,5 +386,6 @@
         private System.Windows.Forms.Button btnMinimizar;
         private System.Windows.Forms.Button button2;
         private System.Windows.Forms.Button mostrarPass1;
+        private System.Windows.Forms.Label txtProceso;
     }
 }

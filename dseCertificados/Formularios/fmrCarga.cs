@@ -36,14 +36,16 @@ namespace dseCertificados
             mensaje = new ToolTip();
             if (Program.certificadoSeleccionado != null)
             {
-                txtClave1.Text = "Asignar constraseña al certificado";
+                txtProceso.Text = "Proteger el certificado con contraseña";
+                txtClave1.Text = "Asignar contraseña";
                 mensaje.SetToolTip(txtClave1, "Permite proteger el certificado con una contraseña");
                 mensaje.SetToolTip(txtPassword1, "Permite proteger el certificado con una contraseña");
                 btnBuscar.Enabled = false;
             }
             else
             {
-                txtClave1.Text = "Constraseña de apertura del fichero";
+                txtProceso.Text = "Contraseña de apertura del fichero";
+                txtClave1.Text = "Contraseña del fichero";
                 mensaje.SetToolTip(txtClave1, "Contraseña que protege el fichero del certificado");
                 mensaje.SetToolTip(txtPassword1, "Contraseña que protege el fichero del certificado");
 
@@ -252,13 +254,14 @@ namespace dseCertificados
 
         private void txtPassword1_Leave(object sender, EventArgs e)
         {
-            if (txtPassword1.Text.Length > 0)
+            if (txtPassword1.Text.Length > 0 && Program.certificadoSeleccionado != null) //Si se ha cargado un certificado del almacen, la contraseña es para proteger el fichero y debe ser compleja
             {
-                string patronPassword = @"^(?=.*[A-Z])(?=.*[^\w\d\s])(?=.*\d).{8,}$";
+                //string patronPassword = @"^(?=.*[A-Z])(?=.*[^\w\d\s])(?=.*\d).{8,}$"; //Longitud de 8 con al menos una mayuscula, un numero y un caracter especial
+                string patronPassword = @"^(?=.*[A-Z])(?=.*\d).{8,}$"; //Longitud de 8 con al menos una mayuscula y un numero
                 bool chequeoPassword = Regex.IsMatch(txtPassword1.Text, patronPassword);
                 if (!chequeoPassword)
                 {
-                    MessageBox.Show("La contraseña no es segura. Debe tener una longitud mínima de 8 caracteres y que contenga al menos una letra mayúscula, un número y un caracter especial", "Contraseña no válida", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    MessageBox.Show("La contraseña no es segura. Debe tener una longitud mínima de 8 caracteres y que contenga al menos una letra mayúscula y un número", "Contraseña no válida", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                     txtPassword1.Text = "";
                     txtPassword1.Focus();
                 }
