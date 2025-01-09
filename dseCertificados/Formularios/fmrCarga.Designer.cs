@@ -94,6 +94,7 @@
             this.txtClave2.TabIndex = 3;
             this.txtClave2.Text = "Repetir contraseña";
             this.txtClave2.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.txtClave2.Visible = false;
             // 
             // txtPassword1
             // 
@@ -117,6 +118,7 @@
             this.txtPassword2.PasswordChar = '*';
             this.txtPassword2.Size = new System.Drawing.Size(198, 24);
             this.txtPassword2.TabIndex = 5;
+            this.txtPassword2.Visible = false;
             this.txtPassword2.Enter += new System.EventHandler(this.txtPassword2_Enter);
             // 
             // btnCargar
@@ -175,7 +177,7 @@
             // ofdSeleccion
             // 
             this.ofdSeleccion.FileName = "openFileDialog1";
-            this.ofdSeleccion.Filter = "(fichero.pfx)|*.pfx|(fichero.p12)|*.p12";
+            this.ofdSeleccion.Filter = "Archivos de certificado|*.pfx;*.p12";
             this.ofdSeleccion.Title = "Seleccionar fichero a importar";
             // 
             // panelDatos
@@ -213,6 +215,7 @@
             this.mostrarPass1.Size = new System.Drawing.Size(25, 20);
             this.mostrarPass1.TabIndex = 8;
             this.mostrarPass1.UseVisualStyleBackColor = false;
+            this.mostrarPass1.Visible = false;
             this.mostrarPass1.Click += new System.EventHandler(this.mostrarPass1_Click);
             // 
             // panelTitulo

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Drawing;
 using System.IO;
+using System.Linq;
 using System.Security.Cryptography;
 using System.Security.Cryptography.X509Certificates;
 using System.Text.RegularExpressions;
@@ -34,28 +35,39 @@ namespace dseCertificados
 
             //Mensaje a mostrar en la primera contraseña como una ayuda del contenido
             mensaje = new ToolTip();
-            if (Program.certificadoSeleccionado != null)
+            if(Program.certificadoSeleccionado != null)
             {
-                txtProceso.Text = "Proteger el certificado con contraseña";
+                mostrarPass1.Visible = true;
+                txtClave2.Visible = true;
+                txtPassword2.Visible = true;
+                txtProceso.Text = "Certificado seleccionado del almacen del equipo";
                 txtClave1.Text = "Asignar contraseña";
                 mensaje.SetToolTip(txtClave1, "Permite proteger el certificado con una contraseña");
                 mensaje.SetToolTip(txtPassword1, "Permite proteger el certificado con una contraseña");
-                btnBuscar.Enabled = false;
+                //btnBuscar.Enabled = false;
             }
             else
             {
-                txtProceso.Text = "Contraseña de apertura del fichero";
-                txtClave1.Text = "Contraseña del fichero";
+                txtProceso.Text = "Seleccion de certificado desde un fichero";
+                txtClave1.Text = "Contraseña de apertura";
                 mensaje.SetToolTip(txtClave1, "Contraseña que protege el fichero del certificado");
                 mensaje.SetToolTip(txtPassword1, "Contraseña que protege el fichero del certificado");
+                //btnCargar.Enabled = true;
 
             }
 
+            txtPassword1.TextChanged += txtPassword1_TextChanged;
+        }
+
+        private void txtPassword1_TextChanged(object sender, EventArgs e)
+        {
+            // Habilitar el botón si hay texto, deshabilitarlo si está vacío
+            btnCargar.Enabled = !string.IsNullOrWhiteSpace(txtPassword1.Text);
         }
 
         public void CargarDatos()
         {
-            if (Program.certificadoSeleccionado != null)
+            if(Program.certificadoSeleccionado != null)
             {
                 txtNombre.Text = Program.certificadoSeleccionado.FriendlyName ?? "Nombre del certificado no disponible";
                 txtPassword1.Enabled = true;
@@ -68,18 +80,30 @@ namespace dseCertificados
         private void btnBuscar_Click(object sender, EventArgs e)
         {
             txtNombre.Text = "";
-            if (Program.certificadoSeleccionado != null)
+            if(Program.certificadoSeleccionado != null)
             {
                 Program.certificadoSeleccionado = null;
             }
 
             //Dialogo de seleccion del fichero
-            OpenFileDialog ofdSelection = new OpenFileDialog();
-            ofdSeleccion.FileName = ofdSelection.FileName;
-            if (ofdSeleccion.ShowDialog() == DialogResult.OK)
+            OpenFileDialog ofdSelection = new OpenFileDialog()
             {
-                // Obtiene la ruta completa del archivo seleccionado
+                //Filtro de seleccion de ficheros
+                Filter = "Ficheros de certificados|*.pfx;*.p12",
+                CheckFileExists = true
+            };
+
+            //Muestra el fichero seleccionado en el campo del nombre
+            ofdSeleccion.FileName = ofdSelection.FileName;
+            if(ofdSeleccion.ShowDialog() == DialogResult.OK)
+            {
                 certificadoPath = ofdSeleccion.FileName;
+                string[] extensiones = { ".pfx", ".p12" };
+                if(!extensiones.Contains(Path.GetExtension(certificadoPath).ToLower()))
+                {
+                    MessageBox.Show("Seleccione un archivo valido (*.pfx o *.p12");
+                }
+                // Obtiene la ruta completa del archivo seleccionado
 
                 // Actualiza el contenido del TextBox con la ruta del archivo
                 txtNombre.Text = certificadoPath;
@@ -91,7 +115,9 @@ namespace dseCertificados
 
         private void btnCargar_Click(object sender, EventArgs e)
         {
-            if (txtPassword1.Text != txtPassword2.Text)
+            //if(Program.certificadoSeleccionado != null)
+            //{
+            if(txtPassword1.Text != txtPassword2.Text && Program.certificadoSeleccionado != null)
             {
                 MessageBox.Show("Las contraseñas no coinciden", "Aviso", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 txtPassword1.Text = "";
@@ -99,6 +125,7 @@ namespace dseCertificados
                 txtPassword1.Focus();
                 btnCargar.Enabled = false;
             }
+            //}
             else
             {
                 password = txtPassword1.Text;
@@ -106,12 +133,12 @@ namespace dseCertificados
                 string serieCertificado = string.Empty;
 
                 //Si se ha cargado un certificado desde el lineal, el proceso cambia
-                if (Program.certificadoSeleccionado == null)
+                if(Program.certificadoSeleccionado == null)
                 {
                     bool resultado = false;
                     //Se hace la lectura desde el fichero leido
                     (mensajeSalida, resultado) = gestionCertificados.leerCertificado(certificadoPath, password);
-                    if (resultado)
+                    if(resultado)
                     {
                         serieCertificado = gestionCertificados.consultaPropiedades(GestionarCertificados.nombresPropiedades.serieCertificado);
                     }
@@ -125,12 +152,12 @@ namespace dseCertificados
                     serieCertificado = gestionCertificados.consultaPropiedades(GestionarCertificados.nombresPropiedades.serieCertificado);
                 }
 
-                if (!string.IsNullOrEmpty(serieCertificado))
+                if(!string.IsNullOrEmpty(serieCertificado))
                 {
                     //Se obtiene el certificado segun el numero de serie que se pasa por parametro
                     (X509Certificate2 certificado, bool resultadoExportarCertificado) = gestionCertificados.exportaCertificadoDigital(serieCertificado);
 
-                    if (resultadoExportarCertificado)
+                    if(resultadoExportarCertificado)
                     {
                         try
                         {
@@ -152,7 +179,7 @@ namespace dseCertificados
                             Program.GrabarSalida(mensajeSalida, Program.ficheroSalida);
                             Environment.Exit(0);
                         }
-                        catch (CryptographicException ex)
+                        catch(CryptographicException ex)
                         {
                             MessageBox.Show("El certificado no es exportable. Debe estar instalado con la clave privada como exportable.", "Error de certificado", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
 
@@ -177,7 +204,6 @@ namespace dseCertificados
                     txtPassword1.Focus();
                     btnCargar.Enabled = false;
                 }
-
             }
 
         }
@@ -207,7 +233,7 @@ namespace dseCertificados
 
         private void panelMouseMove(object sender, MouseEventArgs e)
         {
-            if (mouseDown)
+            if(mouseDown)
             {
                 this.Location = new Point(
                     this.Location.X - startPoint.X + e.X,
@@ -224,7 +250,7 @@ namespace dseCertificados
 
         private void button2_Click(object sender, EventArgs e)
         {
-            if (Program.certificadoSeleccionado != null) Program.certificadoSeleccionado = null;
+            if(Program.certificadoSeleccionado != null) Program.certificadoSeleccionado = null;
             Program.cambioFormulario(this, new frmSeleccion(gestionCertificados));
         }
 
@@ -235,7 +261,7 @@ namespace dseCertificados
 
         private void mostrarPass1_Click(object sender, EventArgs e)
         {
-            if (mostrarPass1.ImageIndex == 4)
+            if(mostrarPass1.ImageIndex == 4)
             {
                 mostrarPass1.ImageIndex = 5;
                 txtPassword1.PasswordChar = '\0';
@@ -254,14 +280,14 @@ namespace dseCertificados
 
         private void txtPassword1_Leave(object sender, EventArgs e)
         {
-            if (txtPassword1.Text.Length > 0 && Program.certificadoSeleccionado != null) //Si se ha cargado un certificado del almacen, la contraseña es para proteger el fichero y debe ser compleja
+            if(txtPassword1.Text.Length > 0 && Program.certificadoSeleccionado != null) //Si se ha cargado un certificado del almacen, la contraseña es para proteger el fichero y debe ser compleja
             {
-                //string patronPassword = @"^(?=.*[A-Z])(?=.*[^\w\d\s])(?=.*\d).{8,}$"; //Longitud de 8 con al menos una mayuscula, un numero y un caracter especial
-                string patronPassword = @"^(?=.*[A-Z])(?=.*\d).{8,}$"; //Longitud de 8 con al menos una mayuscula y un numero
+                string patronPassword = @"^(?=.*[a-zA-Z])(?=.*\d)(?=.*[^\w\d\s]).{8,}$"; //Longitud como minimo de 8 caracteres con al menos una letra (mayuscula o minuscula), un numero y un caracter especial
+                //string patronPassword = @"^(?=.*[A-Z])(?=.*\d).{8,}$"; //Longitud de 8 con al menos una mayuscula y un numero
                 bool chequeoPassword = Regex.IsMatch(txtPassword1.Text, patronPassword);
-                if (!chequeoPassword)
+                if(!chequeoPassword)
                 {
-                    MessageBox.Show("La contraseña no es segura. Debe tener una longitud mínima de 8 caracteres y que contenga al menos una letra mayúscula y un número", "Contraseña no válida", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    MessageBox.Show("La contraseña no es segura. Debe tener una longitud mínima de 8 caracteres y que contenga al menos una letra (mayúscula o minúscula), un número y un caracter especial", "Contraseña no válida", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                     txtPassword1.Text = "";
                     txtPassword1.Focus();
                 }
