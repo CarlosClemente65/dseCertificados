@@ -40,16 +40,18 @@ namespace dseCertificados
                 mostrarPass1.Visible = true;
                 txtClave2.Visible = true;
                 txtPassword2.Visible = true;
-                txtProceso.Text = "Certificado seleccionado del almacen del equipo";
+                txtProceso.Text = "Proteccion del certificado seleccionado con contraseña";
                 txtClave1.Text = "Asignar contraseña";
-                mensaje.SetToolTip(txtClave1, "Permite proteger el certificado con una contraseña");
-                mensaje.SetToolTip(txtPassword1, "Permite proteger el certificado con una contraseña");
+                lbInformacion.Text = "Para preservar la seguridad, el certificado debe protegerse con una contraseña";
+                mensaje.SetToolTip(txtClave1, "Al menos 8 caracteres con una letra mayuscula, una minuscula, un numero y un caracter especial");
+                mensaje.SetToolTip(txtPassword1, "Al menos 8 caracteres con una letra mayuscula, una minuscula, un numero y un caracter especial");
                 //btnBuscar.Enabled = false;
             }
             else
             {
-                txtProceso.Text = "Seleccion de certificado desde un fichero";
+                txtProceso.Text = "Seleccion del fichero que contiene el certificado";
                 txtClave1.Text = "Contraseña de apertura";
+                lbInformacion.Text = "Contraseña de apertura del fichero que contiene el certificado a importar";
                 mensaje.SetToolTip(txtClave1, "Contraseña que protege el fichero del certificado");
                 mensaje.SetToolTip(txtPassword1, "Contraseña que protege el fichero del certificado");
                 //btnCargar.Enabled = true;
@@ -228,18 +230,29 @@ namespace dseCertificados
         private void panelMouseDown(object sender, MouseEventArgs e)
         {
             mouseDown = true;
-            startPoint = new Point(e.X, e.Y);
+            startPoint = Cursor.Position;
         }
 
         private void panelMouseMove(object sender, MouseEventArgs e)
         {
             if(mouseDown)
             {
-                this.Location = new Point(
-                    this.Location.X - startPoint.X + e.X,
-                    this.Location.Y - startPoint.Y + e.Y);
+                //this.Location = new Point(
+                //    this.Location.X - startPoint.X + e.X,
+                //    this.Location.Y - startPoint.Y + e.Y);
 
-                this.Update();
+                //this.Update();
+
+                // Calcular la diferencia en la posición global del ratón
+                Point currentMousePosition = Cursor.Position;
+                int deltaX = currentMousePosition.X - startPoint.X;
+                int deltaY = currentMousePosition.Y - startPoint.Y;
+
+                // Mover el formulario usando la diferencia calculada
+                this.Location = new Point(this.Location.X + deltaX, this.Location.Y + deltaY);
+
+                // Actualizar la última posición del ratón
+                startPoint = currentMousePosition;
             }
         }
 
@@ -292,6 +305,33 @@ namespace dseCertificados
                     txtPassword1.Focus();
                 }
             }
+        }
+
+        private void frmCarga_Load(object sender, EventArgs e)
+        {
+            //Sucribe los controles a los eventos para mover el formulario 
+            foreach(Control control in this.Controls)
+            {
+                if(control is Panel panel)
+                {
+                    // Asignar eventos al panel
+                    panel.MouseDown += panelMouseDown;
+                    panel.MouseMove += panelMouseMove;
+                    panel.MouseUp += panelMouseUp;
+
+                    // Asignar eventos a todos los controles dentro del panel
+                    foreach(Control subControl in control.Controls)
+                    {
+                        subControl.MouseDown += panelMouseDown;
+                        subControl.MouseMove += panelMouseMove;
+                        subControl.MouseUp += panelMouseUp;
+                    }
+                }
+            }
+            txtProceso.MouseDown += panelMouseDown;
+            txtProceso.MouseMove += panelMouseMove;
+            txtProceso.MouseUp += panelMouseUp;
+
         }
     }
 }

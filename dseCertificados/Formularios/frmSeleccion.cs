@@ -42,8 +42,8 @@ namespace gestionesAEAT.Formularios
 
             //Hace la carga de los certificados almacenados en el equipo y los ordena por nombre
             instanciaCertificado.cargarCertificadosAlmacen();
-            instanciaCertificado.ordenarCertificados(GestionarCertificados.nombresPropiedades.titularCertificado,true);
-            
+            instanciaCertificado.ordenarCertificados(GestionarCertificados.nombresPropiedades.titularCertificado, true);
+
             certificadoSeleccionado = new PropiedadesCertificados();
             certificados = instanciaCertificado.relacionCertificados();
             rellenarDGV(certificados);
@@ -90,7 +90,7 @@ namespace gestionesAEAT.Formularios
             dgvCertificados.Columns["huellaCertificado"].HeaderText = "Huella certificado";
             dgvCertificados.Columns["huellaCertificado"].Width = 300;
             dgvCertificados.Columns["huellaCertificado"].DisplayIndex = 8;
-            dgvCertificados.Columns["passwordCertificado"].Visible  = false;
+            dgvCertificados.Columns["passwordCertificado"].Visible = false;
         }
 
 
@@ -100,16 +100,36 @@ namespace gestionesAEAT.Formularios
 
             //Crea el diccionacion con las columnas y su ordenacion por defecto a true
             estadosOrdenacion = new Dictionary<string, EstadoOrdenacion>();
-            foreach (DataGridViewColumn column in dgvCertificados.Columns)
+            foreach(DataGridViewColumn column in dgvCertificados.Columns)
             {
                 estadosOrdenacion[column.Name] = new EstadoOrdenacion { CampoOrden = column.Name, Ascendente = true };
+            }
+
+            //Sucribe los controles a los eventos para mover el formulario 
+            foreach(Control control in this.Controls)
+            {
+                if(control is Panel panel)
+                {
+                    // Asignar eventos al panel
+                    panel.MouseDown += panelMouseDown;
+                    panel.MouseMove += panelMouseMove;
+                    panel.MouseUp += panelMouseUp;
+
+                    // Asignar eventos a todos los controles dentro del panel
+                    foreach(Control subControl in control.Controls)
+                    {
+                        subControl.MouseDown += panelMouseDown;
+                        subControl.MouseMove += panelMouseMove;
+                        subControl.MouseUp += panelMouseUp;
+                    }
+                }
             }
         }
 
         private void txtBusqueda_TextChanged(object sender, EventArgs e)
         {
             List<PropiedadesCertificados> certificados = gestionCertificados.relacionCertificados();
-            if (certificados != null)
+            if(certificados != null)
             {
                 certificados = gestionCertificados.filtrarCertificados(txtBusqueda.Text);
                 rellenarDGV(certificados);
@@ -126,14 +146,14 @@ namespace gestionesAEAT.Formularios
         private void btnSeleccion_Click(object sender, EventArgs e)
         {
             int indice = dgvCertificados.SelectedRows[0].Index;
-            if (indice >= 0 && indice < dgvCertificados.Rows.Count)
+            if(indice >= 0 && indice < dgvCertificados.Rows.Count)
             {
                 DataGridViewCell celda = dgvCertificados.Rows[indice].Cells["serieCertificado"];
-                if (celda != null)
+                if(celda != null)
                 {
                     string serieCertificado = celda.Value.ToString();
                     (X509Certificate2 certificado, bool resultado) = gestionCertificados.exportaCertificadoDigital(serieCertificado);
-                    if (resultado)
+                    if(resultado)
                     {
                         Program.certificadoSeleccionado = certificado;
                         frmCarga frmCarga = new frmCarga();
@@ -169,7 +189,7 @@ namespace gestionesAEAT.Formularios
             EstadoOrdenacion estado = estadosOrdenacion[columna];
 
             //Carga en la variable los certificado ordenados
-            if (equivalenciaColumnasEnum.TryGetValue(estado.CampoOrden, out GestionarCertificados.nombresPropiedades propiedadEnum));
+            if(equivalenciaColumnasEnum.TryGetValue(estado.CampoOrden, out GestionarCertificados.nombresPropiedades propiedadEnum)) ;
             var certificados = gestionCertificados.ordenarCertificados(propiedadEnum, estado.Ascendente);
 
             //Cambia el estado para la siguiente ordenacion hacerlo a la inversa
@@ -181,10 +201,10 @@ namespace gestionesAEAT.Formularios
 
         private void panelMouseDown(object sender, MouseEventArgs e)
         {
-            if (e.Button == MouseButtons.Left)
+            if(e.Button == MouseButtons.Left)
             {
                 mouseDown = true;
-                startPoint = new Point(e.X, e.Y);
+                startPoint = Cursor.Position;
                 // Desactiva la captura de eventos del control
                 Capture = false;
             }
@@ -192,13 +212,18 @@ namespace gestionesAEAT.Formularios
 
         private void panelMouseMove(object sender, MouseEventArgs e)
         {
-            if (mouseDown)
+            if(mouseDown)
             {
-                Location = new Point(
-                Location.X - startPoint.X + e.X,
-                Location.Y - startPoint.Y + e.Y);
+                // Calcular la diferencia en la posición global del ratón
+                Point currentMousePosition = Cursor.Position;
+                int deltaX = currentMousePosition.X - startPoint.X;
+                int deltaY = currentMousePosition.Y - startPoint.Y;
 
-                Update();
+                // Mover el formulario usando la diferencia calculada
+                this.Location = new Point(this.Location.X + deltaX, this.Location.Y + deltaY);
+
+                // Actualizar la última posición del ratón
+                startPoint = currentMousePosition;
             }
         }
 
