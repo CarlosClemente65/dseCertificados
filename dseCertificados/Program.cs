@@ -69,10 +69,10 @@ namespace dseCertificados
                                 passwordCertificado = argumentos[3];
                             }
 
-                            controlFicheros(ficheroCertificado);
+                            //controlFicheros(ficheroCertificado);
                             controlFicheros(ficheroSalida);
                             controlFicheros(ficheroResultado);
-                            controlFicheros(Path.ChangeExtension(Program.ficheroSalida, "da1"));
+                            //controlFicheros(Path.ChangeExtension(Program.ficheroSalida, "da1"));
 
                             break;
                     }
