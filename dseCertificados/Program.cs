@@ -183,7 +183,7 @@ namespace dseCertificados
 
         public static void GrabarSalida(string mensajeSalida, string ficheroSalida)
         {
-            File.WriteAllText(ficheroSalida, mensajeSalida);
+            File.WriteAllText(ficheroSalida, mensajeSalida,Encoding.GetEncoding(1252));
         }
 
         public static void cambioFormulario (Form formularioActual, Form nuevoFormulario)
