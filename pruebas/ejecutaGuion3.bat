@@ -1,0 +1,1 @@
+C:\Programacion\c#\dseCertificados\dseCertificados\bin\Release\dse_certificados.exe ds123456 guion3.txt

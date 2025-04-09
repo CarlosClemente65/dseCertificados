@@ -1,0 +1,2 @@
+TIPO=1
+SALIDA=C:\Programacion\c#\dseCertificados\pruebas\certificados.json

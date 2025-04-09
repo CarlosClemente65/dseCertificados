@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using System.Linq;
 using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Windows.Forms;
@@ -25,70 +26,113 @@ namespace dseCertificados
             string dsClave = string.Empty;
             try
             {
-                if (argumentos.Length < 3)
+                if(argumentos.Length < 2)
                 {
-                    if (argumentos.Length > 0 && (argumentos[0] == "-h" || argumentos[0] == "?"))
+                    if(argumentos.Length > 0 && (argumentos[0] == "-h" || argumentos[0] == "?"))
                     {
                         SalirAplicacion(mensaje);
                     }
                     else
                     {
-                        mensaje += $"Son necesarios 3 parametros: dsclave, tipo de proceso y fichero de salida";
+                        mensaje += $"Son necesarios 2 parametros: dsclave, y fichero con el guion";
                         SalirAplicacion(mensaje);
                     }
 
                 }
+
                 else
                 {
                     dsClave = argumentos[0];
-                    if (dsClave != "ds123456")
+                    if(dsClave != "ds123456")
                     {
                         mensaje += "Clave de ejecucion incorrecta";
                         SalirAplicacion(mensaje);
                     }
-                    tipo = Convert.ToInt32(argumentos[1]);
 
-                    switch (tipo)
-                    {
-                        case 1:
-                        case 2:
-                            ficheroSalida = argumentos[2];
-                            ficheroResultado = Path.ChangeExtension(ficheroSalida, "sal");
-                            controlFicheros(ficheroSalida);
-                            controlFicheros(ficheroResultado);
-                            controlFicheros(Path.ChangeExtension(Program.ficheroSalida, "da1"));
+                    CargarGuion(argumentos[1]);
 
-                            break;
-
-                        case 3:
-                            ficheroCertificado = argumentos[2];
-                            ficheroSalida = Path.ChangeExtension(ficheroCertificado, "b64");
-                            ficheroResultado = Path.ChangeExtension(ficheroCertificado, "sal");
-                            if (argumentos.Length > 3)
-                            {
-                                passwordCertificado = argumentos[3];
-                            }
-
-                            //controlFicheros(ficheroCertificado);
-                            controlFicheros(ficheroSalida);
-                            controlFicheros(ficheroResultado);
-                            //controlFicheros(Path.ChangeExtension(Program.ficheroSalida, "da1"));
-
-                            break;
-                    }
                 }
-                EjecutaProceso();
+
+                //Si el guion se ha cargado correctamente, se sale de la aplicacion
+                if(string.IsNullOrEmpty(mensaje))
+                {
+                    EjecutaProceso();
+                }
+                else
+                {
+                    File.WriteAllText(ficheroResultado, mensaje);
+                }
             }
 
-            catch (Exception ex)
+            catch(Exception ex)
             {
                 mensaje = $"Error en el proceso {ex.Message}";
-                if (ex.InnerException != null)
+                if(ex.InnerException != null)
                 {
                     mensaje += ex.InnerException.Message;
                 }
                 File.WriteAllText(ficheroResultado, mensaje);
             }
+
+        }
+
+        private static string CargarGuion(string guion)
+        {
+            string mensaje = string.Empty;
+            try
+            {
+                string[] lineas = File.ReadAllLines(guion);
+                foreach(string linea in lineas)
+                {
+                    string[] partes = linea.Split('=');
+                    string clave = partes[0].ToUpper();
+                    string valor = partes[1];
+                    switch(clave)
+                    {
+                        case "TIPO":
+                            tipo = Convert.ToInt32(valor);
+                            break;
+
+                        case "FICHERO":
+                            ficheroCertificado = valor;
+                            break;
+
+                        case "CLAVE":
+                            passwordCertificado = valor;
+                            break;
+
+                        case "SALIDA":
+                            ficheroSalida = valor;
+                            break;
+                    }
+                }
+            }
+            catch(Exception ex)
+            {
+                throw new Exception($"Error al cargar el guion {ex.Message}");
+
+            }
+
+            switch(tipo)
+            {
+                case 1:
+                case 2:
+                    ficheroResultado = Path.ChangeExtension(ficheroSalida, "sal");
+                    controlFicheros(ficheroSalida);
+                    controlFicheros(ficheroResultado);
+                    controlFicheros(Path.ChangeExtension(Program.ficheroSalida, "da1"));
+
+                    break;
+
+                case 3:
+                    ficheroSalida = Path.ChangeExtension(ficheroCertificado, "b64");
+                    ficheroResultado = Path.ChangeExtension(ficheroCertificado, "sal");
+                    controlFicheros(ficheroSalida);
+                    controlFicheros(ficheroResultado);
+
+                    break;
+            }
+            return mensaje;
 
         }
 
@@ -98,7 +142,7 @@ namespace dseCertificados
 
             try
             {
-                switch (tipo)
+                switch(tipo)
                 {
                     case 1:
                         //Obtiene datos de los certificados instalados en el equipo
@@ -123,7 +167,7 @@ namespace dseCertificados
                     case 3:
                         //Transforma a un fichero en base64 un certificado pasado como fichero
                         (string textoExportacion, bool resultadoExportaB64) = gestion.exportaCertificadoB64(ficheroCertificado, passwordCertificado);
-                        if (resultadoExportaB64)
+                        if(resultadoExportaB64)
                         {
                             GrabarSalida(textoExportacion, ficheroSalida);
                             GrabarSalida("OK", ficheroResultado);
@@ -144,7 +188,7 @@ namespace dseCertificados
                 }
             }
 
-            catch (Exception ex)
+            catch(Exception ex)
             {
                 mensaje += $"Se ha producido un error en la ejecucion. {ex}";
                 SalirAplicacion(mensaje);
@@ -154,7 +198,7 @@ namespace dseCertificados
         public static void SalirAplicacion(string mensaje)
         {
             //Si hay algun texto de error en el log, lo graba en un fichero
-            if (!string.IsNullOrEmpty(mensaje))
+            if(!string.IsNullOrEmpty(mensaje))
             {
                 File.WriteAllText(ficheroResultado, mensaje);
             }
@@ -183,10 +227,10 @@ namespace dseCertificados
 
         public static void GrabarSalida(string mensajeSalida, string ficheroSalida)
         {
-            File.WriteAllText(ficheroSalida, mensajeSalida,Encoding.GetEncoding(1252));
+            File.WriteAllText(ficheroSalida, mensajeSalida, Encoding.GetEncoding(1252));
         }
 
-        public static void cambioFormulario (Form formularioActual, Form nuevoFormulario)
+        public static void cambioFormulario(Form formularioActual, Form nuevoFormulario)
         {
             //Mostrar el nuevo formulario
             nuevoFormulario.Show();
@@ -195,9 +239,9 @@ namespace dseCertificados
             formularioActual.Hide();
         }
 
-        public static void controlFicheros (string fichero)
+        public static void controlFicheros(string fichero)
         {
-            if (File.Exists(fichero))
+            if(File.Exists(fichero))
             {
                 File.Delete(fichero);
             }

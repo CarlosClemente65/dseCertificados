@@ -1,0 +1,3 @@
+TIPO=3
+FICHERO=C:\Programacion\c#\dseCertificados\pruebas\sisante.da1
+CLAVE=Subpop1969%
