@@ -26,15 +26,15 @@ namespace dseCertificados
             string dsClave = string.Empty;
             try
             {
-                if(argumentos.Length < 2)
+                if(argumentos.Length < 3)
                 {
                     if(argumentos.Length > 0 && (argumentos[0] == "-h" || argumentos[0] == "?"))
                     {
-                        SalirAplicacion(mensaje);
+                        MostrarAyuda();
                     }
                     else
                     {
-                        mensaje += $"Son necesarios 2 parametros: dsclave, y fichero con el guion";
+                        mensaje += $"Son necesarios 3 parametros: dsclave, tipo y fichero de salida o el guion para el tipo 3";
                         SalirAplicacion(mensaje);
                     }
 
@@ -48,25 +48,38 @@ namespace dseCertificados
                         mensaje += "Clave de ejecucion incorrecta";
                         SalirAplicacion(mensaje);
                     }
+                    tipo = Convert.ToInt32(argumentos[1]);
 
-                    CargarGuion(argumentos[1]);
+                    switch(tipo)
+                    {
+                        case 1:
+                        case 2:
+                            ficheroSalida = argumentos[2];
+                            ficheroResultado = Path.ChangeExtension(ficheroSalida, "sal");
+                            controlFicheros(ficheroSalida);
+                            controlFicheros(ficheroResultado);
+                            controlFicheros(Path.ChangeExtension(Program.ficheroSalida, "da1"));
+                            break;
 
-                }
+                        case 3:
+                            string ruta = Path.GetDirectoryName(argumentos[2]);
+                            ficheroResultado = $@"{ruta}\{ficheroResultado}";
+                            CargarGuionTipo3(argumentos[2]);
+                            break;
 
-                //Si el guion se ha cargado correctamente, se sale de la aplicacion
-                if(string.IsNullOrEmpty(mensaje))
-                {
+                        default:
+                            mensaje += "Tipo de ejecucion incorrecto";
+                            SalirAplicacion(mensaje);
+                            break;
+                    }
                     EjecutaProceso();
                 }
-                else
-                {
-                    File.WriteAllText(ficheroResultado, mensaje);
-                }
+
             }
 
             catch(Exception ex)
             {
-                mensaje = $"Error en el proceso {ex.Message}";
+                mensaje = $"Error en el proceso. {ex.Message}";
                 if(ex.InnerException != null)
                 {
                     mensaje += ex.InnerException.Message;
@@ -76,9 +89,8 @@ namespace dseCertificados
 
         }
 
-        private static string CargarGuion(string guion)
+        private static void CargarGuionTipo3(string guion)
         {
-            string mensaje = string.Empty;
             try
             {
                 string[] lineas = File.ReadAllLines(guion);
@@ -89,10 +101,6 @@ namespace dseCertificados
                     string valor = partes[1];
                     switch(clave)
                     {
-                        case "TIPO":
-                            tipo = Convert.ToInt32(valor);
-                            break;
-
                         case "FICHERO":
                             ficheroCertificado = valor;
                             break;
@@ -100,40 +108,19 @@ namespace dseCertificados
                         case "CLAVE":
                             passwordCertificado = valor;
                             break;
-
-                        case "SALIDA":
-                            ficheroSalida = valor;
-                            break;
                     }
                 }
+                ficheroSalida = Path.ChangeExtension(ficheroCertificado, "b64");
+                ficheroResultado = Path.ChangeExtension(ficheroCertificado, "sal");
+                controlFicheros(ficheroSalida);
+                controlFicheros(ficheroResultado);
+
             }
             catch(Exception ex)
             {
-                throw new Exception($"Error al cargar el guion {ex.Message}");
+                throw new Exception($"Error al cargar el guion. ",ex);
 
             }
-
-            switch(tipo)
-            {
-                case 1:
-                case 2:
-                    ficheroResultado = Path.ChangeExtension(ficheroSalida, "sal");
-                    controlFicheros(ficheroSalida);
-                    controlFicheros(ficheroResultado);
-                    controlFicheros(Path.ChangeExtension(Program.ficheroSalida, "da1"));
-
-                    break;
-
-                case 3:
-                    ficheroSalida = Path.ChangeExtension(ficheroCertificado, "b64");
-                    ficheroResultado = Path.ChangeExtension(ficheroCertificado, "sal");
-                    controlFicheros(ficheroSalida);
-                    controlFicheros(ficheroResultado);
-
-                    break;
-            }
-            return mensaje;
-
         }
 
         public static void EjecutaProceso()
@@ -209,20 +196,21 @@ namespace dseCertificados
         {
             StringBuilder mensaje = new StringBuilder();
             mensaje.AppendLine("");
-            mensaje.AppendLine(@"Uso de la aplicacion: dse_certificados.exe clave tipo [salida.json | certificado.pfx password]");
+            mensaje.AppendLine(@"Uso de la aplicacion: dse_certificados.exe clave tipo [salida.json | quion.txt]");
             mensaje.AppendLine("\nParametros:");
-            mensaje.AppendLine(@"  clave            Clave de ejecucion del programa");
-            mensaje.AppendLine(@"  tipo             Tipo de proceso a ejecutar segun la siguiente lista:");
-            mensaje.AppendLine(@"                       1 = Obtener las propiedades de los certificados instalados en el equipo (salida en .json)");
-            mensaje.AppendLine(@"                       2 = Exporta certificado seleccionado por pantalla y sus propiedades)");
-            mensaje.AppendLine(@"                       3 = Exporta certificado pasado por fichero a base64");
-            mensaje.AppendLine(@"  salida.json      Nombre del fichero donde se grabara la salida");
-            mensaje.AppendLine(@"  certificado.pfx: Nombre del fichero con el certificado a exportar)");
-            mensaje.AppendLine(@"  password:        contraseña del certificado digital a exportar)");
+            mensaje.AppendLine(@"  clave        Clave de ejecucion del programa");
+            mensaje.AppendLine(@"  tipo         Tipo de proceso a ejecutar segun la siguiente lista:");
+            mensaje.AppendLine(@"                  1 = Obtener las propiedades de los certificados instalados en el equipo (salida en .json)");
+            mensaje.AppendLine(@"                  2 = Exporta certificado seleccionado por pantalla y sus propiedades)");
+            mensaje.AppendLine(@"                  3 = Exporta certificado pasado por fichero a base64");
+            mensaje.AppendLine(@"  salida.json  Nombre del fichero donde se grabara la salida");
+            mensaje.AppendLine(@"  guion.txt    Fichero para procesar el tipo 3 con el siguiente contenido");
+            mensaje.AppendLine(@"                  FICHERO=certificado.pfx (fichero que contiene el certificado a exportar)");
+            mensaje.AppendLine(@"                  CLAVE=password (contraseña del certificado digital)");
             mensaje.AppendLine("\nPulse una tecla para continuar");
 
-            string texto = mensaje.ToString();
             Console.WriteLine(mensaje.ToString());
+            Console.ReadKey();
         }
 
         public static void GrabarSalida(string mensajeSalida, string ficheroSalida)

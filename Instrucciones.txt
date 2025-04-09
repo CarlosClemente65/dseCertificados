@@ -1,5 +1,5 @@
 /*Uso de la aplicacion
-	dse_certificados.exe clave tipo [salida.json | certificado.pfx password]
+	dse_certificados.exe clave tipo [salida.json | guion.txt]
 	
 	- Parametros:
 		* dsclave: unicamente sirve como medida de seguridad de ejecucion y debe pasarse siempre ds123456
@@ -8,13 +8,14 @@
 			2 = Exporta certificado seleccionado por pantalla y sus propiedades
 			3 = Exporta certificado pasado por fichero a base64
 		* salida.json: Nombre del fichero donde se grabara la salida
-		* certificado.pfx: nombre del fichero que contiene el certificado a exportar
-		* password: contraseña del certificado digital
+		* guion.txt: Fichero para procesar el tipo 3 (exportar certificado en base64) con el siguiente contenido:
+			- FICHERO=certificado.pfx (fichero que contiene el certificado a exportar)
+			- CLAVE=password (contraseña del certificado digital)
 		
 	- Nota: Siempre se genera un fichero.sal con el resultado del proceso (OK o el error producido)
 		
 /* Ejemplos de uso:
 	Obtener relacion de certificados instalados en el equipo con sus datos: dse_certificados clave 1 certificados.json 
 	Obtener datos del certificado seleccionado en pantalla: dse_certificados clave 2 certificados.json 
-	Exportar certificado a base64: dse_certificados clave 3 certificado.pfx contraseña
+	Exportar certificado a base64: dse_certificados clave 3 guion.txt
 	
