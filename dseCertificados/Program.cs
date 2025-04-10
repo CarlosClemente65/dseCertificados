@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using System.Linq;
+using System.Reflection.Emit;
 using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Windows.Forms;
@@ -62,9 +63,17 @@ namespace dseCertificados
                             break;
 
                         case 3:
-                            string ruta = Path.GetDirectoryName(argumentos[2]);
+                            string guion = argumentos[2];
+
+                            //Comprobamos que existe el guion
+                            if(!File.Exists(guion))
+                            {
+                                mensaje += $"El fichero {guion} no existe";
+                                SalirAplicacion(mensaje);
+                            }
+                            string ruta = Path.GetDirectoryName(guion);
                             ficheroResultado = $@"{ruta}\{ficheroResultado}";
-                            CargarGuionTipo3(argumentos[2]);
+                            CargarGuionTipo3(guion);
                             break;
 
                         default:
@@ -94,31 +103,66 @@ namespace dseCertificados
             try
             {
                 string[] lineas = File.ReadAllLines(guion);
+                bool flag = false;
+
+                //Procesa las lineas del guion
                 foreach(string linea in lineas)
                 {
-                    string[] partes = linea.Split('=');
-                    string clave = partes[0].ToUpper();
+                    string[] partes = linea.Split(new char[] { '=' }, 2);
+                    string clave = partes[0];
                     string valor = partes[1];
+
                     switch(clave)
                     {
                         case "FICHERO":
                             ficheroCertificado = valor;
+
+                            //Comprueba que existe el fichero
+                            if(!File.Exists(ficheroCertificado))
+                            {
+                                mensaje += $"El fichero {ficheroCertificado} no existe";
+                                SalirAplicacion(mensaje);
+                            }
+
+                            //Comprueba que se ha pasado la contraseña
+                            if(!string.IsNullOrEmpty(passwordCertificado))
+                            {
+                                flag = true;
+                            }
                             break;
 
                         case "CLAVE":
                             passwordCertificado = valor;
+
+                            //Comprueba que se ha pasado la contraseña
+                            if(string.IsNullOrEmpty(passwordCertificado))
+                            {
+                                mensaje += $"No se ha indicado la clave del certificado";
+                                SalirAplicacion(mensaje);
+                            }
+
+                            //Comprueba que se ha pasado el fichero
+                            if(!string.IsNullOrEmpty(ficheroCertificado))
+                            {
+                                flag = true;
+                            }
                             break;
                     }
                 }
-                ficheroSalida = Path.ChangeExtension(ficheroCertificado, "b64");
-                ficheroResultado = Path.ChangeExtension(ficheroCertificado, "sal");
-                controlFicheros(ficheroSalida);
-                controlFicheros(ficheroResultado);
+
+                //Si se ha pasado el fichero y la clave, se asignan los ficheros de salida
+                if(flag)
+                {
+                    ficheroSalida = Path.ChangeExtension(ficheroCertificado, "b64");
+                    ficheroResultado = Path.ChangeExtension(ficheroCertificado, "sal");
+                    controlFicheros(ficheroSalida);
+                    controlFicheros(ficheroResultado);
+                }
 
             }
             catch(Exception ex)
             {
-                throw new Exception($"Error al cargar el guion. ",ex);
+                throw new Exception($"Error al cargar el guion. ", ex);
 
             }
         }

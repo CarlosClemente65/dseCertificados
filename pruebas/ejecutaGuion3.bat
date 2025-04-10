@@ -1,1 +1,1 @@
-D:\Programacion\c#\dseCertificados\dseCertificados\bin\Release\dse_certificados.exe ds123456 3 guion3.txt
+c:\Programacion\c#\dseCertificados\dseCertificados\bin\Release\dse_certificados.exe ds123456 3 guion3.txt

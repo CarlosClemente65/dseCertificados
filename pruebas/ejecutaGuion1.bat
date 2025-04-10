@@ -1,1 +1,1 @@
-d:\Programacion\c#\dseCertificados\dseCertificados\bin\Release\dse_certificados.exe ds123456 1 certificados.json
+c:\Programacion\c#\dseCertificados\dseCertificados\bin\Release\dse_certificados.exe ds123456 1 certificados.json
