@@ -145,22 +145,36 @@ namespace gestionesAEAT.Formularios
 
         private void btnSeleccion_Click(object sender, EventArgs e)
         {
-            int indice = dgvCertificados.SelectedRows[0].Index;
-            if(indice >= 0 && indice < dgvCertificados.Rows.Count)
+            if(dgvCertificados.Rows.Count > 0)
             {
-                DataGridViewCell celda = dgvCertificados.Rows[indice].Cells["serieCertificado"];
-                if(celda != null)
+                if(dgvCertificados.SelectedRows.Count > 0)
                 {
-                    string serieCertificado = celda.Value.ToString();
-                    (X509Certificate2 certificado, bool resultado) = gestionCertificados.exportaCertificadoDigital(serieCertificado);
-                    if(resultado)
+                    int indice = dgvCertificados.SelectedRows[0].Index;
+                    if(indice >= 0 && indice < dgvCertificados.Rows.Count)
                     {
-                        Program.certificadoSeleccionado = certificado;
-                        frmCarga frmCarga = new frmCarga();
-                        Program.cambioFormulario(this, frmCarga);
-                        frmCarga.CargarDatos();
+                        DataGridViewCell celda = dgvCertificados.Rows[indice].Cells["serieCertificado"];
+                        if(celda != null)
+                        {
+                            string serieCertificado = celda.Value.ToString();
+                            (X509Certificate2 certificado, bool resultado) = gestionCertificados.exportaCertificadoDigital(serieCertificado);
+                            if(resultado)
+                            {
+                                Program.certificadoSeleccionado = certificado;
+                                frmCarga frmCarga = new frmCarga();
+                                Program.cambioFormulario(this, frmCarga);
+                                frmCarga.CargarDatos();
+                            }
+                        }
                     }
                 }
+                else
+                {
+                    MessageBox.Show("No hay ningun certificado seleccionado. Debe seleccionar uno", "Error", MessageBoxButtons.OK,MessageBoxIcon.Error);
+                }
+            }
+            else
+            {
+                MessageBox.Show("No hay certificados instalados en el equipo. Debe instalar alguno para poder seleccionarlo","Error",MessageBoxButtons.OK,MessageBoxIcon.Error);
             }
         }
 

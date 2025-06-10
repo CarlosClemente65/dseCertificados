@@ -1,0 +1,2 @@
+FICHERO=c:\Programacion\c#\dseCertificados\pruebas\sisante.da1
+CLAVE=Subpop1969%
