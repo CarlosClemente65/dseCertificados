@@ -117,8 +117,6 @@ namespace dseCertificados
 
         private void btnCargar_Click(object sender, EventArgs e)
         {
-            //if(Program.certificadoSeleccionado != null)
-            //{
             if(txtPassword1.Text != txtPassword2.Text && Program.certificadoSeleccionado != null)
             {
                 MessageBox.Show("Las contraseñas no coinciden", "Aviso", MessageBoxButtons.OK, MessageBoxIcon.Warning);
@@ -127,7 +125,6 @@ namespace dseCertificados
                 txtPassword1.Focus();
                 btnCargar.Enabled = false;
             }
-            //}
             else
             {
                 password = txtPassword1.Text;
@@ -156,50 +153,45 @@ namespace dseCertificados
 
                 if(!string.IsNullOrEmpty(serieCertificado))
                 {
-                    //Se obtiene el certificado segun el numero de serie que se pasa por parametro
-                    (X509Certificate2 certificado, bool resultadoExportarCertificado) = gestionCertificados.exportaCertificadoDigital(serieCertificado);
-
-                    if(resultadoExportarCertificado)
+                    try
                     {
-                        try
-                        {
-                            //Es necesario un arreglo de bytes para marcar el certificado como exportable, y debe pasarse la contraseña para poder gestionarlo.
-                            byte[] certificadoBytes = certificado.Export(X509ContentType.Pfx, password);
-                            X509Certificate2 certificadoSalida = new X509Certificate2(certificadoBytes, password, X509KeyStorageFlags.Exportable);
+                        // Exporta el certificado digital con el metodo que chequea si tiene clave privada y si es exportable, si no se cumple alguna de las condiciones lanza una excepcion
+                        X509Certificate2 certificado = gestionCertificados.exportaCertificadoDigitalSeguro(serieCertificado);
 
-                            //Una vez los datos del certificado preparados se genera otro arreglo de bytes para exportar el certificado
-                            byte[] datosCertificado = certificadoSalida.Export(X509ContentType.Pfx, password);
+                        //Es necesario un arreglo de bytes para marcar el certificado como exportable, y debe pasarse la contraseña para poder gestionarlo.
+                        byte[] certificadoBytes = certificado.Export(X509ContentType.Pfx, password);
+                        X509Certificate2 certificadoSalida = new X509Certificate2(certificadoBytes, password, X509KeyStorageFlags.Exportable);
 
-                            //Se modifica la extension del fichero por seguridad
-                            string salidaCertificado = Path.ChangeExtension(Program.ficheroSalida, "da1");
-                            File.WriteAllBytes(salidaCertificado, datosCertificado);
-                            Program.GrabarSalida("OK", Program.ficheroResultado);
+                        //Una vez los datos del certificado preparados se genera otro arreglo de bytes para exportar el certificado
+                        byte[] datosCertificado = certificadoSalida.Export(X509ContentType.Pfx, password);
 
-                            //Si se han podido leer los certificados y las propiedades, se ajusta el Json recibido a la salida que se espera con letras en vez de nombres de propiedades
-                            bool resultado = false;
-                            (mensajeSalida, resultado) = gestionCertificados.exportarPropiedadesCertificados(true);
-                            Program.GrabarSalida(mensajeSalida, Program.ficheroSalida);
-                            Environment.Exit(0);
-                        }
-                        catch(CryptographicException ex)
-                        {
-                            MessageBox.Show("El certificado no es exportable. Debe estar instalado con la clave privada como exportable.", "Error de certificado", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                        //Se modifica la extension del fichero por seguridad
+                        string salidaCertificado = Path.ChangeExtension(Program.ficheroSalida, "da1");
+                        File.WriteAllBytes(salidaCertificado, datosCertificado);
+                        Program.GrabarSalida("OK", Program.ficheroResultado);
 
-                            //Se borran los certificados digitales cargados para que se vuelvan a leer del almacen (si no se hace solo muestra en el lineal el ultimo seleccionado)
-                            gestionCertificados.limpiarCertificados();
-                            button2.PerformClick();
-                        }
+                        //Si se han podido leer los certificados y las propiedades, se ajusta el Json recibido a la salida que se espera con letras en vez de nombres de propiedades
+                        bool resultado = false;
+                        (mensajeSalida, resultado) = gestionCertificados.exportarPropiedadesCertificados(true);
+                        Program.GrabarSalida(mensajeSalida, Program.ficheroSalida);
+                        Environment.Exit(0);
 
                     }
-
-                    else
+                    catch(Exception ex)
                     {
-                        Program.GrabarSalida("No se ha podido exportar el certificado digital", Program.ficheroResultado);
-                        Environment.Exit(0);
+                        // Si se ha producido un error al exportar el certificado, se muestra un mensaje de error con la excepcion y se vuelve a cargar el formulario de seleccion de certificados
+                        MessageBox.Show($"{ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+
+                        //Se borran los certificados digitales cargados para que se vuelvan a leer del almacen (si no se hace solo muestra en el lineal el ultimo seleccionado)
+                        gestionCertificados.limpiarCertificados();
+                        button2.PerformClick();
+
+                        return;
                     }
                 }
                 else
                 {
+                    // Si no hay numero de serie, se muestra un mensaje de error y se vuelve a cargar el formulario de seleccion de certificados
                     MessageBox.Show(mensajeSalida, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     txtPassword1.Text = "";
                     txtPassword2.Text = "";
@@ -207,7 +199,6 @@ namespace dseCertificados
                     btnCargar.Enabled = false;
                 }
             }
-
         }
 
         private void txtPassword2_Enter(object sender, EventArgs e)
@@ -237,12 +228,6 @@ namespace dseCertificados
         {
             if(mouseDown)
             {
-                //this.Location = new Point(
-                //    this.Location.X - startPoint.X + e.X,
-                //    this.Location.Y - startPoint.Y + e.Y);
-
-                //this.Update();
-
                 // Calcular la diferencia en la posición global del ratón
                 Point currentMousePosition = Cursor.Position;
                 int deltaX = currentMousePosition.X - startPoint.X;

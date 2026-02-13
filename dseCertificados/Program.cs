@@ -53,6 +53,9 @@ namespace dseCertificados
 
                     switch(tipo)
                     {
+                        // Opcion 1: Obtiene las propiedades de los certificados instalados en el equipo
+                        // Opcion 2: Exporta el certificado seleccionado por pantalla o cargado desde un fichero y sus propiedades
+
                         case 1:
                         case 2:
                             ficheroSalida = argumentos[2];
@@ -62,6 +65,7 @@ namespace dseCertificados
                             controlFicheros(Path.ChangeExtension(Program.ficheroSalida, "da1"));
                             break;
 
+                        // Opcion 3: Exporta a base64 un certificado pasado por fichero
                         case 3:
                             string guion = argumentos[2];
 
@@ -98,6 +102,7 @@ namespace dseCertificados
 
         }
 
+        // Metodo para cargar el guion de ejecucion del tipo 3 ya que es diferente al resto (se pasa el fichero del certificado y la contraseña)
         private static void CargarGuionTipo3(string guion)
         {
             try
@@ -170,13 +175,12 @@ namespace dseCertificados
         public static void EjecutaProceso()
         {
             GestionarCertificados gestion = new GestionarCertificados();
-
             try
             {
                 switch(tipo)
                 {
+                    //Obtiene datos de los certificados instalados en el equipo
                     case 1:
-                        //Obtiene datos de los certificados instalados en el equipo
                         gestion.cargarCertificadosAlmacen();
                         (string mensajeSalida, bool resultadoExportaDatos) = gestion.exportarPropiedadesCertificados(true);
                         GrabarSalida(mensajeSalida, ficheroSalida);
@@ -184,8 +188,8 @@ namespace dseCertificados
                         SalirAplicacion("");
                         break;
 
+                    //Obtiene los datos de un certificado en fichero
                     case 2:
-                        //Obtiene los datos de un certificado en fichero
                         // Inicializa la aplicación de Windows Forms para mostrar el cuadro de seleccion
                         Application.EnableVisualStyles();
                         Application.SetCompatibleTextRenderingDefault(false);
@@ -195,15 +199,14 @@ namespace dseCertificados
 
                         break;
 
+                    //Transforma a un fichero en base64 un certificado pasado como fichero
                     case 3:
-                        //Transforma a un fichero en base64 un certificado pasado como fichero
                         (string textoExportacion, bool resultadoExportaB64) = gestion.exportaCertificadoB64(ficheroCertificado, passwordCertificado);
                         if(resultadoExportaB64)
                         {
                             GrabarSalida(textoExportacion, ficheroSalida);
                             GrabarSalida("OK", ficheroResultado);
                         }
-
                         else
                         {
                             GrabarSalida(textoExportacion, ficheroResultado);
@@ -218,7 +221,6 @@ namespace dseCertificados
 
                 }
             }
-
             catch(Exception ex)
             {
                 mensaje += $"Se ha producido un error en la ejecucion. {ex}";
