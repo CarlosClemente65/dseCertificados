@@ -156,25 +156,33 @@ namespace gestionesAEAT.Formularios
                         if(celda != null)
                         {
                             string serieCertificado = celda.Value.ToString();
-                            (X509Certificate2 certificado, bool resultado) = gestionCertificados.exportaCertificadoDigital(serieCertificado);
-                            if(resultado)
+                            try
                             {
+                                // Exporta el certificado digital con el metodo que chequea si tiene clave privada y si es exportable, si no se cumple alguna de las condiciones lanza una excepcion
+                                X509Certificate2 certificado = gestionCertificados.exportaCertificadoDigitalSeguro(serieCertificado);
+
                                 Program.certificadoSeleccionado = certificado;
                                 frmCarga frmCarga = new frmCarga();
                                 Program.cambioFormulario(this, frmCarga);
                                 frmCarga.CargarDatos();
+
+                            }
+                            catch(Exception ex)
+                            {
+                                MessageBox.Show($"{ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                                return;
                             }
                         }
                     }
                 }
                 else
                 {
-                    MessageBox.Show("No hay ningun certificado seleccionado. Debe seleccionar uno", "Error", MessageBoxButtons.OK,MessageBoxIcon.Error);
+                    MessageBox.Show("No hay ningun certificado seleccionado. Debe seleccionar uno", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
             }
             else
             {
-                MessageBox.Show("No hay certificados instalados en el equipo. Debe instalar alguno para poder seleccionarlo","Error",MessageBoxButtons.OK,MessageBoxIcon.Error);
+                MessageBox.Show("No hay certificados instalados en el equipo. Debe instalar alguno para poder seleccionarlo", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
